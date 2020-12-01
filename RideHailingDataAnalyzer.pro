@@ -12,17 +12,20 @@ SOURCES += \
     filedialog.cpp \
     fileloadthread.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    rangeslider.cpp
 
 HEADERS += \
     DataEntry.h \
     filedialog.h \
     fileloadthread.h \
-    mainwindow.h
+    mainwindow.h \
+    rangeslider.h
 
 FORMS += \
     filedialog.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    rangeslider.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

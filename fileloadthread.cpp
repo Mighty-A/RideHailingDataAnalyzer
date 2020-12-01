@@ -11,8 +11,10 @@ void FileLoadThread::LoadFile(QString path, std::vector<DataEntry> *dataFrame, s
     this->path = path;
     this->dataFrame = dataFrame;
     this->grid = grid;
-    start();
     mutex.unlock();
+    _CAN_RUN = true;
+    start();
+    //wait();
 }
 
 void FileLoadThread::run()
@@ -64,8 +66,8 @@ void FileLoadThread::run()
                 QStringList split = dataLines[k].split(',');
                 DataEntry tmp(
                         split[0],
-                        split[1].toInt(),
-                        split[2].toInt(),
+                        split[1].toLongLong(),
+                        split[2].toLongLong(),
                         Point{split[3].toDouble(), split[4].toDouble()},
                         Point{split[5].toDouble(), split[6].toDouble()},
                         split[7].toDouble()
@@ -74,7 +76,21 @@ void FileLoadThread::run()
             }
             count += 1;
             emit UpdateProgressBar(int(5 + double(count) / NUMBER_OF_FILES * 95));
+
+            // check for stop signal
+            {
+                QMutexLocker lock(&mutex);
+                if (!_CAN_RUN) {
+                    return;
+                }
+            }
         }
     }
     emit LoadingFinished();
+}
+
+
+void FileLoadThread::Cancel() {
+    QMutexLocker locker(&mutex);
+    _CAN_RUN = false;
 }

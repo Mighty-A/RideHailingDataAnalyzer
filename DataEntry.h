@@ -11,13 +11,13 @@ class DataEntry
 
 public:
     QString ID;
-    int departureTime;
-    int endTime;
+    long long departureTime;
+    long long endTime;
     Point orig;
     Point dest;
     double fee;
 
-    DataEntry(QString ID, int departureTime, int endTime, Point orig, Point dest, double fee) :
+    DataEntry(QString ID, long long departureTime, long long endTime, Point orig, Point dest, double fee) :
         ID(ID),
         departureTime(departureTime),
         endTime(endTime),

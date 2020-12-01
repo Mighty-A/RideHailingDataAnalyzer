@@ -13,15 +13,17 @@ FileDialog::FileDialog(QWidget *parent) :
     ui->folderpath->setText(path);
     dataFrame = new std::vector<DataEntry>;
     grid = new std::vector<std::vector<double>>;
+    ui->CancelButton->setEnabled(false);
 
     connect(ui->openDirButton, &QPushButton::released, this, &FileDialog::SetFolderPath);
 
     // read
     connect(ui->OKButton, &QPushButton::released, this, &FileDialog::ReadFileList);
     connect(&thread, &FileLoadThread::FailToRead, this, &FileDialog::WrongInput);
-    connect(ui->CancelButton, &QPushButton::released, qApp, &QApplication::quit);
+    connect(ui->CancelButton, &QPushButton::released, &thread, &FileLoadThread::Cancel);
     connect(&thread, &FileLoadThread::UpdateProgressBar, ui->loadProgressBar, &QProgressBar::setValue);
     connect(&thread, &FileLoadThread::LoadingFinished, this, &FileDialog::LoadingFinished);
+    connect(&thread, &FileLoadThread::finished, this, &FileDialog::Reset);
 }
 
 FileDialog::~FileDialog()
@@ -38,6 +40,7 @@ void FileDialog::SetFolderPath()
 void FileDialog::ReadFileList()
 {
     ui->OKButton->setEnabled(false);
+    ui->CancelButton->setEnabled(true);
     thread.LoadFile(path, dataFrame, grid);
     /*
     const int NUMBER_OF_FILES = 75;
@@ -104,13 +107,10 @@ void FileDialog::ReadFileList()
 
 void FileDialog::WrongInput()
 {
-    ui->loadProgressBar->reset();
-    grid->clear();
-    dataFrame->clear();
+    Reset();
     QMessageBox tmp;
     tmp.setText("Wrong File Folder! Please choose the correct folder of data!");
     tmp.exec();
-    ui->OKButton->setEnabled(true);
     return;
 }
 
@@ -122,9 +122,16 @@ void FileDialog::LoadingFinished()
         emit SendData(dataFrame, grid);
         close();
     } else {
-        ui->OKButton->setEnabled(true);
-        grid->clear();
-        dataFrame->clear();
-        ui->loadProgressBar->reset();
+        Reset();
     }
+}
+
+void FileDialog::Reset()
+{
+
+    ui->loadProgressBar->reset();
+    grid->clear();
+    dataFrame->clear();
+    ui->OKButton->setEnabled(true);
+    ui->CancelButton->setEnabled(false);
 }

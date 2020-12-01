@@ -13,8 +13,11 @@ class FileLoadThread : public QThread
 {
     Q_OBJECT
 public:
+    bool _CAN_RUN = true;
+
     FileLoadThread();
     void LoadFile(QString path, std::vector<DataEntry>* dataFrame, std::vector<std::vector<double>>* grid);
+    void Cancel();
 
 private:
     QString path;

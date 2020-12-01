@@ -29,11 +29,14 @@ private:
     std::vector<std::vector<double>>* grid = nullptr;
     FileLoadThread thread;
 
+public:
+
 private slots:
     void SetFolderPath();
     void ReadFileList();
     void WrongInput();
     void LoadingFinished();
+    void Reset();
 
 signals:
     void SendData(std::vector<DataEntry>* dataFrame, std::vector<std::vector<double>>*);
