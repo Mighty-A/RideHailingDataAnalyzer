@@ -204,6 +204,7 @@ void RangeSlider::mouseReleaseEvent(QMouseEvent* aEvent)
 
     mFirstHandlePressed = false;
     mSecondHandlePressed = false;
+    emit sliderReleased(mLowerValue, mUpperValue);
 }
 
 void RangeSlider::changeEvent(QEvent* aEvent)

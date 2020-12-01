@@ -5,6 +5,9 @@
 #include "rangeslider.h"
 
 #include <QMainWindow>
+#include <QMessageBox>
+#include <iostream>
+#include <QGroupBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,11 +34,13 @@ private:
     long long upperTimeBound;
     long long startTime;
     long long endTime;
-
+    QGroupBox *mapBox;
 
 private slots:
     void SetStartTimeFromEdit(const QDateTime &tmpDateTime);
     void SetEndTimeFromEdit(const QDateTime &tmpDateTime);
+    void SetTimeFromSlider(int aLowerTime, int aUpperTime);
+
 };
 
 #endif // MAINWINDOW_H

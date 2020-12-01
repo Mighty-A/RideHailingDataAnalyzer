@@ -10,8 +10,8 @@ int main(int argc, char *argv[])
     FileDialog dlg;
     MainWindow w;
 
-    dlg.show();
-    QObject::connect(&dlg, &FileDialog::SendData, &w, &MainWindow::ReceiveShow);
-    //w.show();
+    //dlg.show();
+    //QObject::connect(&dlg, &FileDialog::SendData, &w, &MainWindow::ReceiveShow);
+    w.show();
     return a.exec();
 }
