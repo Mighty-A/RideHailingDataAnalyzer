@@ -20,9 +20,14 @@ void FileLoadThread::LoadFile(QString path, std::vector<DataEntry> *dataFrame, s
 void FileLoadThread::run()
 {
     const int NUMBER_OF_FILES = 75;
-
+    mutex.lock();
+    QString path = this->path;
+    std::vector<DataEntry>* dataFrame = this->dataFrame;
+    std::vector<std::vector<double>>* grid = this->grid;
+    mutex.unlock();
     // load grid data
-    QFile gridFile(path + "/rectangle_grid_table.csv", this);
+
+    QFile gridFile(path + "/rectangle_grid_table.csv");
     if (!gridFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         emit FailToRead();
         return;

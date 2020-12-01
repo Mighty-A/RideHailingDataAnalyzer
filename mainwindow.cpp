@@ -17,8 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
     fieldsLngSlider = new RangeSlider(Qt::Orientation::Horizontal);
     fieldsLatSlider = new RangeSlider(Qt::Orientation::Vertical);
     timeSpanSlider->SetRange(0, 359);
-    timeSpanSlider->setLowerValue(0);
-    timeSpanSlider->setUpperValue(360);
     timeSpanSlider->setEnabled(false);
     fieldsLngSlider->SetRange(0, 9);
     fieldsLatSlider->SetRange(0, 9);
