@@ -5,14 +5,15 @@ FileLoadThread::FileLoadThread()
 
 }
 
-void FileLoadThread::LoadFile(QString path, std::vector<DataEntry> *dataFrame, std::vector<std::vector<double> > *grid)
+void FileLoadThread::LoadFile(QString path, QVector<DataEntry> *dataFrame, QVector<QVector<qreal> > *grid)
 {
     mutex.lock();
     this->path = path;
     this->dataFrame = dataFrame;
     this->grid = grid;
-    mutex.unlock();
     _CAN_RUN = true;
+    _SUCCESS = false;
+    mutex.unlock();
     start();
     //wait();
 }
@@ -22,8 +23,8 @@ void FileLoadThread::run()
     const int NUMBER_OF_FILES = 75;
     mutex.lock();
     QString path = this->path;
-    std::vector<DataEntry>* dataFrame = this->dataFrame;
-    std::vector<std::vector<double>>* grid = this->grid;
+    QVector<DataEntry>* dataFrame = this->dataFrame;
+    QVector<QVector<qreal>>* grid = this->grid;
     mutex.unlock();
     // load grid data
 
@@ -41,7 +42,7 @@ void FileLoadThread::run()
     for (int j = 1; j < gridLines.size(); j++) {
         QString line = gridLines[j];
         QStringList split = line.split(',');
-        std::vector<double> tmp;
+        QVector<qreal> tmp;
 
         for (int col = 1; col < split.size(); col++) {
             tmp.push_back(split[col].toDouble());
@@ -80,7 +81,7 @@ void FileLoadThread::run()
                 dataFrame->push_back(tmp);
             }
             count += 1;
-            emit UpdateProgressBar(int(5 + double(count) / NUMBER_OF_FILES * 95));
+            emit UpdateProgressBar(int(5 + qreal(count) / NUMBER_OF_FILES * 95));
 
             // check for stop signal
             {
@@ -91,6 +92,9 @@ void FileLoadThread::run()
             }
         }
     }
+    mutex.lock();
+    _SUCCESS = true;
+    mutex.unlock();
     emit LoadingFinished();
 }
 

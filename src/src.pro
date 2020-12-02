@@ -16,6 +16,7 @@ SOURCES += \
     fileloadthread.cpp \
     main.cpp \
     mainwindow.cpp \
+    # mytilesource.cpp \
     rangeslider.cpp
 
 HEADERS += \
@@ -23,6 +24,7 @@ HEADERS += \
     filedialog.h \
     fileloadthread.h \
     mainwindow.h \
+    # mytilesource.h \
     rangeslider.h
 
 FORMS += \

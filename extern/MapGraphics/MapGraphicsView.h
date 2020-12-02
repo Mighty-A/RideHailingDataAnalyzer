@@ -76,7 +76,7 @@ signals:
     void zoomLevelChanged(quint8 nZoom);
     
 public slots:
-
+    void Update();
 protected slots:
     virtual void handleChildMouseDoubleClick(QMouseEvent * event);
     virtual void handleChildMouseMove(QMouseEvent * event);

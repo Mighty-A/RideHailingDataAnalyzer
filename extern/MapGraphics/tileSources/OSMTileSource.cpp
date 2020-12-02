@@ -56,13 +56,13 @@ quint16 OSMTileSource::tileSize() const
 quint8 OSMTileSource::minZoomLevel(QPointF ll)
 {
     Q_UNUSED(ll)
-    return 0;
+    return 9;
 }
 
 quint8 OSMTileSource::maxZoomLevel(QPointF ll)
 {
     Q_UNUSED(ll)
-    return 18;
+    return 12;
 }
 
 QString OSMTileSource::name() const

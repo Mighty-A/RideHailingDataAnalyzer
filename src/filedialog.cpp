@@ -1,6 +1,8 @@
 #include "filedialog.h"
 #include "ui_filedialog.h"
 
+#include <QDebug>
+
 FileDialog::FileDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::FileDialog)
@@ -11,8 +13,8 @@ FileDialog::FileDialog(QWidget *parent) :
     this->setWindowTitle("Load File");
     path = QDir::currentPath();
     ui->folderpath->setText(path);
-    dataFrame = new std::vector<DataEntry>;
-    grid = new std::vector<std::vector<double>>;
+    dataFrame = new QVector<DataEntry>;
+    grid = new QVector<QVector<qreal>>;
     ui->CancelButton->setEnabled(false);
 
     connect(ui->openDirButton, &QPushButton::released, this, &FileDialog::SetFolderPath);
@@ -56,18 +58,22 @@ void FileDialog::WrongInput()
 void FileDialog::LoadingFinished()
 {
     QMessageBox::StandardButton result;
+    //qDebug() << dataFrame << dataFrame->size();
+    //qDebug() << grid << grid->size() << ' ' << grid[0].size();
     result = QMessageBox::question(this, "Successfully Loaded", "Go to the main window?", QMessageBox::Yes | QMessageBox::No);
     if (result == QMessageBox::Yes) {
         emit SendData(dataFrame, grid);
-        close();
+        hide();
     } else {
+        thread._SUCCESS = false;
         Reset();
     }
 }
 
 void FileDialog::Reset()
 {
-
+    if (thread._SUCCESS)
+        return;
     ui->loadProgressBar->reset();
     grid->clear();
     dataFrame->clear();

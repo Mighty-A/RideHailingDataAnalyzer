@@ -1,10 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "MapGraphicsScene.h"
-#include "MapGraphicsObject.h"
-#include "MapGraphicsView.h"
-#include "tileSources/OSMTileSource.h"
-#include "tileSources/CompositeTileSource.h"
+#include <QDebug>
+
+#include <QtDebug>
 
 long long FromDateTimetoInt(QDateTime t) {
     const long long OFFSET = - 8 * 3600;
@@ -43,9 +41,10 @@ MainWindow::MainWindow(QWidget *parent)
     // set Time
     lowerTimeBound = startTime = FromDateTimetoInt(ui->startDateTimeEdit->dateTime());
     upperTimeBound = endTime = FromDateTimetoInt(ui->endDateTimeEdit->dateTime());
+
     connect(ui->startDateTimeEdit, &QDateTimeEdit::dateTimeChanged, this, &MainWindow::SetStartTimeFromEdit);
     connect(ui->endDateTimeEdit, &QDateTimeEdit::dateTimeChanged, this, &MainWindow::SetEndTimeFromEdit);
-    connect(timeSpanSlider, &RangeSlider::sliderReleased, this, &MainWindow::SetTimeFromSlider);
+    connect(timeSpanSlider, &RangeSlider::valueChanged, this, &MainWindow::SetTimeFromSlider);
 
     // set Map
     mapBox->resize(500, 500);
@@ -57,15 +56,29 @@ MainWindow::MainWindow(QWidget *parent)
     mapLayout->addWidget(view);
 
     QSharedPointer<OSMTileSource> osmTiles(new OSMTileSource(OSMTileSource::OSMTiles), &QObject::deleteLater);
+    QSharedPointer<MyTileSource> rectTiles(new MyTileSource(), &QObject::deleteLater);
+    //QSharedPointer<GridTileSource> gridTiles(new GridTileSource(), &QObject::deleteLater);
     QSharedPointer<CompositeTileSource> composite(new CompositeTileSource(), &QObject::deleteLater);
     composite->addSourceBottom(osmTiles);
-
+    composite->addSourceTop(rectTiles);
     view->setTileSource(composite);
 
-    // map init
-    view->setZoomLevel(4);
-    view->centerOn(104.07, 30.67);
+    //view->setDragMode(MapGraphicsView::DragMode::NoDrag);
 
+
+    // map init
+    view->setZoomLevel(10);
+    view->centerOn(104.0652259999995, 30.65897999999995);
+    for (int i = 0; i < 4; i++) {
+        Rect[i] = new LineObject(Position(0, 0), Position(0, 0));
+        scene->addObject(Rect[i]);
+    }
+
+    connect(this, &MainWindow::SetRect, rectTiles.data(), &MyTileSource::SetRect);
+    connect(fieldsLngSlider, &RangeSlider::valueChanged, this, &MainWindow::SetFieldsFromHorizontalSliders);
+    connect(fieldsLatSlider, &RangeSlider::valueChanged, this, &MainWindow::SetFieldsFromVerticalSliders);
+    // refresh
+    connect(rectTiles.data(), &MyTileSource::rectChanged, view, &MapGraphicsView::Update);
 }
 MainWindow::~MainWindow()
 {
@@ -75,11 +88,19 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::ReceiveShow(std::vector<DataEntry>* dataFrame, std::vector<std::vector<double>>* grid)
+void MainWindow::ReceiveShow(QVector<DataEntry>* dataFrame, QVector<QVector<qreal>>* grid)
 {
     this->dataFrame = dataFrame;
     this->grid = grid;
+    //qDebug() << dataFrame << dataFrame->size();
+    //qDebug() << grid << grid->size() << ' ' << grid[0].size();
+
+    SetRect(QPointF((*grid)[0][6], (*grid)[0][7]), QPointF((*grid)[99][2], (*grid)[99][3]));
+
+    emit SetRect(QPointF((*grid)[0][6], (*grid)[0][7]), QPointF((*grid)[99][2], (*grid)[99][3]));
+    //view->setZoomLevel(view->zoomLevel());
     this->show();
+
 }
 
 void MainWindow::SetStartTimeFromEdit(const QDateTime& tmpDateTime) {
@@ -122,4 +143,46 @@ void MainWindow::SetTimeFromSlider(int aLowerValue, int aUpperValue)
     ui->startDateTimeEdit->setDateTime(FromInttoDateTime(startTime));
     ui->endDateTimeEdit->setDateTime(FromInttoDateTime(endTime));
     return;
+}
+
+
+void MainWindow::SetFieldsFromHorizontalSliders(int lower, int upper) {
+
+
+    gridLowerX = lower;
+    gridUpperX = upper;
+    SetRect(
+            QPointF((*grid)[gridLowerX + gridLowerY * 10][6], (*grid)[gridLowerX + gridLowerY * 10][7]),
+            QPointF((*grid)[gridUpperX + gridUpperY * 10][2], (*grid)[gridUpperX + gridUpperY * 10][3])
+        );/*
+    view->centerOn(
+            ((*grid)[gridLowerX + gridLowerY * 10][6] + (*grid)[gridUpperX + gridUpperY * 10][2]) / 2,
+            ((*grid)[gridLowerX + gridLowerY * 10][7] + (*grid)[gridUpperX + gridUpperY * 10][3]) / 2
+                );*/
+}
+void MainWindow::SetFieldsFromVerticalSliders(int lower, int upper) {
+    qDebug() << "Vetical change. from " << gridLowerY << ' ' << gridUpperY << " to " << 9 - upper << ' ' << 9 - lower;
+    gridLowerY = 9 - upper;
+    gridUpperY = 9 - lower;
+    SetRect(
+            QPointF((*grid)[gridLowerX + gridLowerY * 10][6], (*grid)[gridLowerX + gridLowerY * 10][7]),
+            QPointF((*grid)[gridUpperX + gridUpperY * 10][2], (*grid)[gridUpperX + gridUpperY * 10][3])
+        );/*
+    view->centerOn(
+            ((*grid)[gridLowerX + gridLowerY * 10][6] + (*grid)[gridUpperX + gridUpperY * 10][2]) / 2,
+            ((*grid)[gridLowerX + gridLowerY * 10][7] + (*grid)[gridUpperX + gridUpperY * 10][3]) / 2
+                );*/
+}
+
+void MainWindow::SetRect(QPointF bottomLeft, QPointF topRight) {
+    qDebug() << "new rect: (" << gridLowerX << "," << gridLowerY << ") (" << gridUpperX << "," << gridUpperY << ")";
+    qDebug() << "(" << bottomLeft.x() << "," << bottomLeft.y() << ") (" << topRight.x() << "," << topRight.y() << ")";
+    Rect[0]->setEndPointA(Position(bottomLeft.x(), bottomLeft.y()));
+    Rect[0]->setEndPointB(Position(topRight.x(), bottomLeft.y()));
+    Rect[1]->setEndPointA(Position(topRight.x(), bottomLeft.y()));
+    Rect[1]->setEndPointB(Position(topRight.x(), topRight.y()));
+    Rect[2]->setEndPointA(Position(topRight.x(), topRight.y()));
+    Rect[2]->setEndPointB(Position(bottomLeft.x(), topRight.y()));
+    Rect[3]->setEndPointA(Position(bottomLeft.x(), topRight.y()));
+    Rect[3]->setEndPointB(Position(bottomLeft.x(), bottomLeft.y()));
 }

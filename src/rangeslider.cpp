@@ -282,6 +282,7 @@ void RangeSlider::setLowerValue(int aLowerValue)
 
     mLowerValue = aLowerValue;
     emit lowerValueChanged(mLowerValue);
+    emit valueChanged(mLowerValue, mUpperValue);
 
     update();
 }
@@ -300,7 +301,7 @@ void RangeSlider::setUpperValue(int aUpperValue)
 
     mUpperValue = aUpperValue;
     emit upperValueChanged(mUpperValue);
-
+    emit valueChanged(mLowerValue, mUpperValue);
     update();
 }
 

@@ -25,8 +25,8 @@ public:
 private:
     Ui::FileDialog *ui;
     QString path;
-    std::vector<DataEntry>* dataFrame = nullptr;
-    std::vector<std::vector<double>>* grid = nullptr;
+    QVector<DataEntry>* dataFrame = nullptr;
+    QVector<QVector<qreal>>* grid = nullptr;
     FileLoadThread thread;
 
 public:
@@ -39,7 +39,7 @@ private slots:
     void Reset();
 
 signals:
-    void SendData(std::vector<DataEntry>* dataFrame, std::vector<std::vector<double>>*);
+    void SendData(QVector<DataEntry>* dataFrame, QVector<QVector<qreal>>*);
 };
 
 #endif // FILEDIALOG_H

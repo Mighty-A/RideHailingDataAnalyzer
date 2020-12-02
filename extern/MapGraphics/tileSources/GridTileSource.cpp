@@ -69,7 +69,7 @@ QString GridTileSource::name() const
 
 QString GridTileSource::tileFileExtension() const
 {
-    return ".png";
+    return "png";
 }
 
 void GridTileSource::fetchTile(quint32 x, quint32 y, quint8 z)

@@ -31,7 +31,7 @@ MapGraphicsView::MapGraphicsView(MapGraphicsScene *scene, QWidget *parent) :
             SIGNAL(timeout()),
             this,
             SLOT(renderTiles()));
-    renderTimer->start(200);
+    renderTimer->start(10);
 }
 
 MapGraphicsView::~MapGraphicsView()
@@ -347,11 +347,15 @@ void MapGraphicsView::handleChildViewScrollWheel(QWheelEvent *event)
 {
     event->setAccepted(true);
 
+    if (this->dragMode() == MapGraphicsView::NoDrag) {
+        return;
+    }
     this->setDragMode(MapGraphicsView::ScrollHandDrag);
     if (event->delta() > 0)
         this->zoomIn(MouseZoom);
     else
         this->zoomOut(MouseZoom);
+
 }
 
 //private slot
@@ -476,4 +480,10 @@ void MapGraphicsView::resetQGSSceneSize()
     const quint64 dimension = sqrt((long double)_tileSource->tilesOnZoomLevel(this->zoomLevel()))*_tileSource->tileSize();
     if (_childScene->sceneRect().width() != dimension)
         _childScene->setSceneRect(0,0,dimension,dimension);
+}
+
+void MapGraphicsView::Update()
+{
+    zoomIn();
+    zoomOut();
 }

@@ -53,7 +53,7 @@ signals:
     void upperValueChanged(int aUpperValue);
     void rangeChanged(int aMin, int aMax);
     void sliderReleased(int aLowerValue, int aUpperValue);
-
+    void valueChanged(int aLowerValue, int aUpperValue);
 public slots:
     void setLowerValue(int aLowerValue);
     void setUpperValue(int aUpperValue);

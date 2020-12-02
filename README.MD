@@ -11,10 +11,10 @@ Click OK and wait.
 After a while, you will see the loading work done successfully.  
 ![successfully loaded](image/img1.png)
 
-## Choosing Fields and Time Span to analyze
+## Easy to Tune the Parameters
 Time Span: support both calendar edit and slider.  
 Fields: support sliders.
-![setting fields and time span](image/img2.png)
+![setting fields and time span](image/img2.gif)
 
 ## Extern Library Used
 [MapGraphics](https://github.com/raptorswing/MapGraphics) 

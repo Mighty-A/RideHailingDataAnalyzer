@@ -14,15 +14,15 @@ class FileLoadThread : public QThread
     Q_OBJECT
 public:
     bool _CAN_RUN = true;
-
+    bool _SUCCESS = false;
     FileLoadThread();
-    void LoadFile(QString path, std::vector<DataEntry>* dataFrame, std::vector<std::vector<double>>* grid);
+    void LoadFile(QString path, QVector<DataEntry>* dataFrame, QVector<QVector<qreal>>* grid);
     void Cancel();
 
 private:
     QString path;
-    std::vector<DataEntry>* dataFrame;
-    std::vector<std::vector<double>>* grid;
+    QVector<DataEntry>* dataFrame;
+    QVector<QVector<qreal>>* grid;
 
 protected:
     void run() override;
