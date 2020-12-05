@@ -47,6 +47,7 @@
        <property name="font">
         <font>
          <family>Arial</family>
+         <pointsize>15</pointsize>
         </font>
        </property>
        <property name="text">
@@ -274,6 +275,7 @@
        <property name="font">
         <font>
          <family>Arial</family>
+         <pointsize>15</pointsize>
         </font>
        </property>
        <property name="text">
@@ -287,7 +289,7 @@
         <number>10</number>
        </property>
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="analyzerBox">
          <property name="title">
           <string>GroupBox</string>
          </property>

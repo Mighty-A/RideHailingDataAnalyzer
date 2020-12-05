@@ -15,12 +15,31 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <iostream>
+#include <QThread>
 #include <QGroupBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+class Worker : public QObject
+{
+    Q_OBJECT
+public:
+    enum dataInGridType {INFLOW, OUTFLOW, INTERNAL};
+    Worker(QObject* parent = nullptr);
+    ~Worker();
+signals:
+    void sig_finish();
+
+public slots:
+    void slt_dowork(
+            QVector<DataEntry>* dataFrame,
+            QVector<QVector<qreal>>* grid,
+            QVector<QVector<QVector<const DataEntry*>>>* dataInGrid
+    );
+
+};
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -32,11 +51,15 @@ public:
 public slots:
     void ReceiveShow(QVector<DataEntry>* dataFrame, QVector<QVector<qreal>>* grid);
     void SetRect(QPointF bottomLeft, QPointF topRight);
-
+    void PreprocessFinished();
 private:
     Ui::MainWindow *ui;
+    QMutex mutex;
     QVector<DataEntry>* dataFrame = nullptr;
     QVector<QVector<qreal>>* grid = nullptr;
+
+    QVector<QVector<QVector<const DataEntry*>>>* dataInGrid;
+
     RangeSlider* timeSpanSlider;
     RangeSlider* fieldsLngSlider;
     RangeSlider* fieldsLatSlider;
@@ -53,6 +76,9 @@ private:
     MapGraphicsScene * scene;
     QSharedPointer<CompositeTileSource> composite;
     LineObject * Rect[4];
+    Worker* preprocess = nullptr;
+    QThread* pthread = nullptr;
+
 
 
 private slots:
@@ -64,6 +90,11 @@ private slots:
 
 signals:
     void UpdateMap();
+    void Preprocess(
+            QVector<DataEntry>* dataFrame,
+            QVector<QVector<qreal>>* grid,
+            QVector<QVector<QVector<const DataEntry*>>>* dataInGrid
+    );
 };
 
 #endif // MAINWINDOW_H

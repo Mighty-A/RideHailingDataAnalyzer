@@ -74,8 +74,8 @@ void FileLoadThread::run()
                         split[0],
                         split[1].toLongLong(),
                         split[2].toLongLong(),
-                        Point{split[3].toDouble(), split[4].toDouble()},
-                        Point{split[5].toDouble(), split[6].toDouble()},
+                        QPointF{split[3].toDouble(), split[4].toDouble()},
+                        QPointF{split[5].toDouble(), split[6].toDouble()},
                         split[7].toDouble()
                 );
                 dataFrame->push_back(tmp);

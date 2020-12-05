@@ -8,11 +8,33 @@ long long FromDateTimetoInt(QDateTime t) {
     const long long OFFSET = - 8 * 3600;
     return t.toMSecsSinceEpoch() / 1000 + OFFSET;
 }
+
 QDateTime FromInttoDateTime(long long time) {
     const long long OFFSET = 8 * 3600;
     QDateTime tmp;
     tmp.setMSecsSinceEpoch((time + OFFSET) * 1000);
     return tmp;
+}
+
+int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid) {
+    int indexX = 0;
+    int indexY = 0;
+    for (int i = 0; i < 9; i++) {
+
+        if (p.x() > (*grid)[i][2]) {
+            indexX = i + 1;
+        } else {
+            break;
+        }
+    }
+    for (int i = 0; i < 9; i++) {
+        if (p.y() > (*grid)[i * 10][3]) {
+            indexY = i + 1;
+        } else {
+            break;
+        }
+    }
+    return indexX + 10 * indexY;
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -67,39 +89,78 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // map init
-    view->setZoomLevel(10);
+    view->setZoomLevel(11);
     view->centerOn(104.0652259999995, 30.65897999999995);
     for (int i = 0; i < 4; i++) {
         Rect[i] = new LineObject(Position(0, 0), Position(0, 0));
         scene->addObject(Rect[i]);
     }
 
-    connect(this, &MainWindow::SetRect, rectTiles.data(), &MyTileSource::SetRect);
+    //connect(this, &MainWindow::SetRect, rectTiles.data(), &MyTileSource::SetRect);
     connect(fieldsLngSlider, &RangeSlider::valueChanged, this, &MainWindow::SetFieldsFromHorizontalSliders);
     connect(fieldsLatSlider, &RangeSlider::valueChanged, this, &MainWindow::SetFieldsFromVerticalSliders);
     // refresh
     connect(rectTiles.data(), &MyTileSource::rectChanged, view, &MapGraphicsView::Update);
+
+    // data init
+    dataInGrid = new QVector<QVector<QVector<const DataEntry*>>>;
+    for (int i = 0; i < 100; i++) {
+        QVector<QVector<const DataEntry*>> tmp;
+        for (int j = 0; j < 3; j++) {
+            tmp.push_back(QVector<const DataEntry*>());
+        }
+        dataInGrid->push_back(tmp);
+    }
+    pthread = new QThread();
+    preprocess = new Worker();
+    preprocess->moveToThread(pthread);
+    connect(this, &MainWindow::Preprocess, preprocess, &Worker::slt_dowork);
+    connect(preprocess, &Worker::sig_finish, this, &MainWindow::PreprocessFinished);
+    pthread->start();
 }
 MainWindow::~MainWindow()
 {
     delete ui;
     delete dataFrame;
     delete grid;
+    pthread->quit();
+    pthread->wait();
 }
 
 
 void MainWindow::ReceiveShow(QVector<DataEntry>* dataFrame, QVector<QVector<qreal>>* grid)
 {
-    this->dataFrame = dataFrame;
+    this->show();
+    mutex.lock();
     this->grid = grid;
+    this->dataFrame = dataFrame;
+    ui->statusbar->showMessage(tr("Preprocessing..."));
+    emit Preprocess(dataFrame, grid, dataInGrid);
     //qDebug() << dataFrame << dataFrame->size();
     //qDebug() << grid << grid->size() << ' ' << grid[0].size();
 
-    SetRect(QPointF((*grid)[0][6], (*grid)[0][7]), QPointF((*grid)[99][2], (*grid)[99][3]));
+    // preprocess
+/*
+    for (int i = 0; i < dataFrame->size(); i++) {
+        //qDebug() << i;
+        int indexOrig = LocatePointInGrid((*dataFrame)[i].orig);
+        int indexDest = LocatePointInGrid((*dataFrame)[i].dest);
+        //qDebug() << indexDest << ' ' << indexOrig;
+        const DataEntry* tmp = &(this->dataFrame->at(i));
+        if (indexDest == indexOrig) {
+            dataInGrid[indexOrig][dataInGridType::INFLOW]->push_back(tmp);
+        } else {
 
-    emit SetRect(QPointF((*grid)[0][6], (*grid)[0][7]), QPointF((*grid)[99][2], (*grid)[99][3]));
-    //view->setZoomLevel(view->zoomLevel());
-    this->show();
+            dataInGrid[indexOrig][dataInGridType::OUTFLOW]->push_back(tmp);
+            dataInGrid[indexDest][dataInGridType::INFLOW]->push_back(tmp);
+        }
+    }*/
+
+    mutex.unlock();
+    SetRect(QPointF((*grid)[0][6], (*grid)[0][7]), QPointF((*grid)[99][2], (*grid)[99][3]));
+    //emit SetRect(QPointF((*grid)[0][6], (*grid)[0][7]), QPointF((*grid)[99][2], (*grid)[99][3]));
+
+
 
 }
 
@@ -161,7 +222,7 @@ void MainWindow::SetFieldsFromHorizontalSliders(int lower, int upper) {
                 );*/
 }
 void MainWindow::SetFieldsFromVerticalSliders(int lower, int upper) {
-    qDebug() << "Vetical change. from " << gridLowerY << ' ' << gridUpperY << " to " << 9 - upper << ' ' << 9 - lower;
+    //qDebug() << "Vetical change. from " << gridLowerY << ' ' << gridUpperY << " to " << 9 - upper << ' ' << 9 - lower;
     gridLowerY = 9 - upper;
     gridUpperY = 9 - lower;
     SetRect(
@@ -175,8 +236,10 @@ void MainWindow::SetFieldsFromVerticalSliders(int lower, int upper) {
 }
 
 void MainWindow::SetRect(QPointF bottomLeft, QPointF topRight) {
+    /*
     qDebug() << "new rect: (" << gridLowerX << "," << gridLowerY << ") (" << gridUpperX << "," << gridUpperY << ")";
     qDebug() << "(" << bottomLeft.x() << "," << bottomLeft.y() << ") (" << topRight.x() << "," << topRight.y() << ")";
+    */
     Rect[0]->setEndPointA(Position(bottomLeft.x(), bottomLeft.y()));
     Rect[0]->setEndPointB(Position(topRight.x(), bottomLeft.y()));
     Rect[1]->setEndPointA(Position(topRight.x(), bottomLeft.y()));
@@ -185,4 +248,39 @@ void MainWindow::SetRect(QPointF bottomLeft, QPointF topRight) {
     Rect[2]->setEndPointB(Position(bottomLeft.x(), topRight.y()));
     Rect[3]->setEndPointA(Position(bottomLeft.x(), topRight.y()));
     Rect[3]->setEndPointB(Position(bottomLeft.x(), bottomLeft.y()));
+}
+
+void MainWindow::PreprocessFinished() {
+    ui->statusbar->showMessage(tr("Ready"));
+}
+
+Worker::Worker(QObject *parent) {
+    Q_UNUSED(parent)
+}
+
+Worker::~Worker()
+{
+
+}
+
+void Worker::slt_dowork(
+        QVector<DataEntry>* dataFrame,
+        QVector<QVector<qreal>>* grid,
+        QVector<QVector<QVector<const DataEntry*>>>* dataInGrid
+) {
+    for (int i = 0; i < dataFrame->size(); i++) {
+        //qDebug() << i;
+        int indexOrig = LocatePointInGrid((*dataFrame)[i].orig, grid);
+        int indexDest = LocatePointInGrid((*dataFrame)[i].dest, grid);
+        //qDebug() << indexDest << ' ' << indexOrig;
+        const DataEntry* tmp = &(dataFrame->at(i));
+        if (indexDest == indexOrig) {
+            (*dataInGrid)[indexOrig][dataInGridType::INFLOW].push_back(tmp);
+        } else {
+
+            (*dataInGrid)[indexOrig][dataInGridType::OUTFLOW].push_back(tmp);
+            (*dataInGrid)[indexDest][dataInGridType::INFLOW].push_back(tmp);
+        }
+    }
+    emit sig_finish();
 }
