@@ -4,9 +4,16 @@
 
 #include <QtDebug>
 
-int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid) {
-    int indexX = 0;
-    int indexY = 0;
+inline int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid) {
+    const static qreal bottom = 30.524081949676;
+    const static qreal top = 30.7938780503239;
+    const static qreal left = 103.908407474531;
+    const static qreal right = 104.190680820374;
+    int indexX = int((p.x() - left) / ((right - left) / 10));
+    int indexY = int((p.y() - bottom) / ((top - bottom) / 10));
+    indexX = std::max(0, std::min(indexX, 9));
+    indexY = std::max(0, std::min(indexY, 9));
+    /*
     for (int i = 0; i < 9; i++) {
 
         if (p.x() > (*grid)[i][2]) {
@@ -21,7 +28,7 @@ int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid) {
         } else {
             break;
         }
-    }
+    }*/
     return indexX + 10 * indexY;
 }
 

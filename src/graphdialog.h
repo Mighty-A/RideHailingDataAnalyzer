@@ -29,6 +29,13 @@ private:
     const int timeStepValue[7] = {600, 1800, 3600, 7200, 21600, 43200, 86400};
     QChart *lineChart;
     QChart *barChart;
+    QChart *scatterChart;
+    struct FeeTime {
+        qreal fee;
+        long long time;
+    };
+
+    QVector<QVector<FeeTime>> *scatterData;
 
 private:
     MainWindow* mainwindow;
@@ -48,6 +55,8 @@ private:
 public slots:
     void SetOrderChart(int timeStep);
     void SetBarChart(int timeStep);
+    void SetScatterChart(int timeStep);
+    void UpdateScatterChart();
 };
 
 #endif // GRAPHDIALOG_H
