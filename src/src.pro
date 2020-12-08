@@ -1,6 +1,6 @@
 QT       += core gui network sql
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets charts
 
 CONFIG += c++11
 
@@ -14,6 +14,7 @@ TEMPLATE = app
 SOURCES += \
     filedialog.cpp \
     fileloadthread.cpp \
+    graphdialog.cpp \
     main.cpp \
     mainwindow.cpp \
     # mytilesource.cpp \
@@ -23,12 +24,14 @@ HEADERS += \
     DataEntry.h \
     filedialog.h \
     fileloadthread.h \
+    graphdialog.h \
     mainwindow.h \
     # mytilesource.h \
     rangeslider.h
 
 FORMS += \
     filedialog.ui \
+    graphdialog.ui \
     mainwindow.ui \
     rangeslider.ui
 

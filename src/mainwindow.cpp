@@ -4,18 +4,6 @@
 
 #include <QtDebug>
 
-long long FromDateTimetoInt(QDateTime t) {
-    const long long OFFSET = - 8 * 3600;
-    return t.toMSecsSinceEpoch() / 1000 + OFFSET;
-}
-
-QDateTime FromInttoDateTime(long long time) {
-    const long long OFFSET = 8 * 3600;
-    QDateTime tmp;
-    tmp.setMSecsSinceEpoch((time + OFFSET) * 1000);
-    return tmp;
-}
-
 int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid) {
     int indexX = 0;
     int indexY = 0;
@@ -117,6 +105,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::Preprocess, preprocess, &Worker::slt_dowork);
     connect(preprocess, &Worker::sig_finish, this, &MainWindow::PreprocessFinished);
     pthread->start();
+
+    // analyzer button init
+    ui->graphButton->setEnabled(false);
+    ui->visualButton->setEnabled(false);
+    ui->predictButton->setEnabled(false);
+    connect(ui->graphButton, &QPushButton::click, this, &MainWindow::on_graphButton_clicked);
 }
 MainWindow::~MainWindow()
 {
@@ -252,6 +246,9 @@ void MainWindow::SetRect(QPointF bottomLeft, QPointF topRight) {
 
 void MainWindow::PreprocessFinished() {
     ui->statusbar->showMessage(tr("Ready"));
+    ui->graphButton->setEnabled(true);
+    ui->visualButton->setEnabled(true);
+    ui->predictButton->setEnabled(true);
 }
 
 Worker::Worker(QObject *parent) {
@@ -283,4 +280,10 @@ void Worker::slt_dowork(
         }
     }
     emit sig_finish();
+}
+
+void MainWindow::on_graphButton_clicked()
+{
+    GraphDialog* graphWindow = new GraphDialog(this, this);
+    graphWindow->exec();
 }

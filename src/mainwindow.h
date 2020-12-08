@@ -11,6 +11,7 @@
 #include "tileSources/mytilesource.h"
 #include "tileSources/GridTileSource.h"
 #include "LineObject.h"
+#include "graphdialog.h"
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -21,6 +22,10 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+long long FromDateTimetoInt(QDateTime t);
+QDateTime FromInttoDateTime(long long time);
+int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid);
 
 class Worker : public QObject
 {
@@ -55,6 +60,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QMutex mutex;
+public:
     QVector<DataEntry>* dataFrame = nullptr;
     QVector<QVector<qreal>>* grid = nullptr;
 
@@ -87,6 +93,8 @@ private slots:
     void SetTimeFromSlider(int aLowerTime, int aUpperTime);
     void SetFieldsFromHorizontalSliders(int lower, int upper);
     void SetFieldsFromVerticalSliders(int lower, int upper);
+
+    void on_graphButton_clicked();
 
 signals:
     void UpdateMap();
