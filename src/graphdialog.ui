@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1125</width>
+    <width>1349</width>
     <height>804</height>
    </rect>
   </property>
@@ -39,11 +39,16 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <property name="tabPosition">
         <enum>QTabWidget::North</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="numbersOfOrdersTab">
         <attribute name="title">
@@ -335,8 +340,14 @@
            </property>
            <item>
             <widget class="QLabel" name="label_2">
+             <property name="font">
+              <font>
+               <family>Calibri</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="text">
-              <string>TextLabel</string>
+              <string>Display the fee-time scatter chart in a period of time.</string>
              </property>
             </widget>
            </item>

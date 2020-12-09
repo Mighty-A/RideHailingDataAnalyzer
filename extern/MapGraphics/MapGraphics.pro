@@ -17,6 +17,7 @@ INCLUDEPATH += .
 SOURCES += MapGraphicsScene.cpp \
     MapGraphicsObject.cpp \
     MapGraphicsView.cpp \
+    PointObject.cpp \
     guts/PrivateQGraphicsScene.cpp \
     guts/PrivateQGraphicsObject.cpp \
     guts/Conversions.cpp \
@@ -41,6 +42,7 @@ HEADERS += MapGraphicsScene.h\
         MapGraphics_global.h \
     MapGraphicsObject.h \
     MapGraphicsView.h \
+    PointObject.h \
     guts/PrivateQGraphicsScene.h \
     guts/PrivateQGraphicsObject.h \
     guts/Conversions.h \

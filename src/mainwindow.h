@@ -12,6 +12,9 @@
 #include "tileSources/GridTileSource.h"
 #include "LineObject.h"
 #include "graphdialog.h"
+#include "CircleObject.h"
+#include "PointObject.h"
+#include "visualizationdialog.h"
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -95,6 +98,8 @@ private slots:
     void SetFieldsFromVerticalSliders(int lower, int upper);
 
     void on_graphButton_clicked();
+
+    void on_visualButton_clicked();
 
 signals:
     void UpdateMap();

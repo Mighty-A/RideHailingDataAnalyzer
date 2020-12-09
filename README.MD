@@ -16,5 +16,15 @@ Time Span: support both calendar edit and slider.
 Fields: support sliders.
 ![setting fields and time span](image/img2.gif)
 
+## Diverse Statistic Graphs
+Three kinds of graphs:  
+Number of Orders: get a quick view at the number of orders over time in a line chart.   
+Orders percentage: display the percentage of orders leaving/entering/inside the area selected.  
+Fee-Time scatter chat: diplay the distribution of both fee and time.
+![statistic graph](image/img3.gif)
+
+## Heat Map
+Display the order in the map to show the distribution of the orders.
+![heat map](image/img4.gif)
 ## Extern Library Used
 [MapGraphics](https://github.com/raptorswing/MapGraphics) 

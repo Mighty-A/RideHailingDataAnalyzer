@@ -11,7 +11,7 @@ public:
     explicit CircleObject(qreal radius,bool sizeIsZoomInvariant=true, QColor fillColor = QColor(0,0,0,0),MapGraphicsObject *parent = 0);
     virtual ~CircleObject();
 
-    //pure-virtual from MapGraphicsObject
+    //pure-virtual from MapGraphicsObjconstect
     QRectF boundingRect() const;
 
     //pure-virtual from MapGraphicsObject

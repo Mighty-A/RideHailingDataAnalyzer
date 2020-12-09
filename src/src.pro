@@ -18,7 +18,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     # mytilesource.cpp \
-    rangeslider.cpp
+    rangeslider.cpp \
+    visualizationdialog.cpp
 
 HEADERS += \
     DataEntry.h \
@@ -27,13 +28,15 @@ HEADERS += \
     graphdialog.h \
     mainwindow.h \
     # mytilesource.h \
-    rangeslider.h
+    rangeslider.h \
+    visualizationdialog.h
 
 FORMS += \
     filedialog.ui \
     graphdialog.ui \
     mainwindow.ui \
-    rangeslider.ui
+    rangeslider.ui \
+    visualizationdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -35,7 +35,9 @@ void MapGraphicsScene::addObject(MapGraphicsObject *object)
 QList<MapGraphicsObject *> MapGraphicsScene::objects() const
 {
     QList<MapGraphicsObject *> toRet;
-
+    for (auto i = _objects.begin(); i != _objects.end(); i++) {
+        toRet.append(*i);
+    }
     return toRet;
 }
 

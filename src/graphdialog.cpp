@@ -75,9 +75,9 @@ void GraphDialog::SetOrderChart(int timeStepIndex)
     //graphData.clear();
     lineChart->removeAllSeries();
     if (lineChart->axisX())
-        lineChart->removeAxis(lineChart->axisY());
-    if (lineChart->axisY())
         lineChart->removeAxis(lineChart->axisX());
+    if (lineChart->axisY())
+        lineChart->removeAxis(lineChart->axisY());
     //qDebug() << startTime << ' ' << endTime;
     timeStep = timeStepValue[timeStepIndex];
     int* count = new int[(endTime - startTime) / timeStep + 10]{0};
@@ -93,7 +93,7 @@ void GraphDialog::SetOrderChart(int timeStepIndex)
                 }
             }
             for (int t = 0; t < (*dataInGrid)[gridIndex][2].size(); t++) {
-                const DataEntry* tmp = (*dataInGrid)[gridIndex][1][t];
+                const DataEntry* tmp = (*dataInGrid)[gridIndex][2][t];
                 if (startTime <= tmp->departureTime && tmp->departureTime <= endTime) {
                     //graphData.push_back(tmp);
                     int timeIndex = (tmp->departureTime - startTime) / timeStep;
@@ -140,7 +140,7 @@ void GraphDialog::SetOrderChart(int timeStepIndex)
     lineChart->addAxis(axisY, Qt::AlignLeft);
     lineChart->setTitle("number of order requests in grids selected");
     lineChart->addSeries(series);
-    //series->attachAxis(axisX);
+    series->attachAxis(axisX);
 
 
 
@@ -151,9 +151,9 @@ void GraphDialog::SetBarChart(int timeStepIndex)
     //graphData.clear();
     barChart->removeAllSeries();
     if (barChart->axisX())
-        barChart->removeAxis(barChart->axisY());
-    if (barChart->axisY())
         barChart->removeAxis(barChart->axisX());
+    if (barChart->axisY())
+        barChart->removeAxis(barChart->axisY());
     //qDebug() << startTime << ' ' << endTime;
     timeStep = timeStepValue[timeStepIndex];
     int* countOutFlow = new int[(endTime - startTime) / timeStep + 10]{0};
@@ -245,8 +245,8 @@ void GraphDialog::SetBarChart(int timeStepIndex)
     // axisY
     QValueAxis* axisY = new QValueAxis;
     axisY->setLabelFormat("%i");
-    axisY->setTitleText("order number");
-    axisY->setRange(0, tmpMax);
+    axisY->setTitleText("order percentage");
+    axisY->setRange(0, 100);
     axisY->setLabelsFont(axisFont);
 
     barChart->addAxis(axisY, Qt::AlignLeft);

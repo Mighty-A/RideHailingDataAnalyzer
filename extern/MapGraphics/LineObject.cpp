@@ -66,6 +66,10 @@ void LineObject::paint(QPainter *painter,
                           offsetB.y() / latPerMeter);
 
     painter->drawLine(metersA, metersB);
+    //qDebug() << "paint line";
+    //qDebug() << pos().x() << ' ' << pos().y();
+    //qDebug() << metersA.x() << ' ' << metersA.y();
+    //qDebug() << metersB.x() << ' ' << metersB.y();
 }
 
 qreal LineObject::thickness() const

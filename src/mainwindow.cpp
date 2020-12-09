@@ -8,9 +8,9 @@ inline int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid) {
     const static qreal bottom = 30.524081949676;
     const static qreal top = 30.7938780503239;
     const static qreal left = 103.908407474531;
-    const static qreal right = 104.190680820374;
-    int indexX = int((p.x() - left) / ((right - left) / 10));
-    int indexY = int((p.y() - bottom) / ((top - bottom) / 10));
+    const static qreal right = 104.222044525468;
+    int indexX = floor((p.x() - left) / ((right - left) / 10));
+    int indexY = floor((p.y() - bottom) / ((top - bottom) / 10));
     indexX = std::max(0, std::min(indexX, 9));
     indexY = std::max(0, std::min(indexY, 9));
     /*
@@ -90,6 +90,7 @@ MainWindow::MainWindow(QWidget *parent)
         Rect[i] = new LineObject(Position(0, 0), Position(0, 0));
         scene->addObject(Rect[i]);
     }
+    scene->addObject(new PointObject(Position(104.065226, 30.65897999999995), 0.000313 * 7, 0.5));
 
     //connect(this, &MainWindow::SetRect, rectTiles.data(), &MyTileSource::SetRect);
     connect(fieldsLngSlider, &RangeSlider::valueChanged, this, &MainWindow::SetFieldsFromHorizontalSliders);
@@ -117,7 +118,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphButton->setEnabled(false);
     ui->visualButton->setEnabled(false);
     ui->predictButton->setEnabled(false);
-    connect(ui->graphButton, &QPushButton::click, this, &MainWindow::on_graphButton_clicked);
+    //connect(ui->graphButton, &QPushButton::clicked, this, &MainWindow::on_graphButton_clicked);
+    //connect(ui->visualButton, &QPushButton::clicked, this, &MainWindow::on_visualButton_clicked);
 }
 MainWindow::~MainWindow()
 {
@@ -279,7 +281,7 @@ void Worker::slt_dowork(
         //qDebug() << indexDest << ' ' << indexOrig;
         const DataEntry* tmp = &(dataFrame->at(i));
         if (indexDest == indexOrig) {
-            (*dataInGrid)[indexOrig][dataInGridType::INFLOW].push_back(tmp);
+            (*dataInGrid)[indexOrig][dataInGridType::INTERNAL].push_back(tmp);
         } else {
 
             (*dataInGrid)[indexOrig][dataInGridType::OUTFLOW].push_back(tmp);
@@ -292,5 +294,11 @@ void Worker::slt_dowork(
 void MainWindow::on_graphButton_clicked()
 {
     GraphDialog* graphWindow = new GraphDialog(this, this);
-    graphWindow->exec();
+    graphWindow->show();
+}
+
+void MainWindow::on_visualButton_clicked()
+{
+    VisualizationDialog* visualizationDialog = new VisualizationDialog(this, this);
+    visualizationDialog->show();
 }
