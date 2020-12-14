@@ -28,7 +28,7 @@ QT_END_NAMESPACE
 
 long long FromDateTimetoInt(QDateTime t);
 QDateTime FromInttoDateTime(long long time);
-int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid);
+int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid = nullptr);
 
 class Worker : public QObject
 {

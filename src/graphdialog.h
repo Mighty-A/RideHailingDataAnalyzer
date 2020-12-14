@@ -57,6 +57,10 @@ public slots:
     void SetBarChart(int timeStep);
     void SetScatterChart(int timeStep);
     void UpdateScatterChart();
+    void UpdateScatterChartTimeLabel(int);
+private slots:
+    void on_FeeTimeButtonLeft_clicked();
+    void on_FeeTimeButtonRight_clicked();
 };
 
 #endif // GRAPHDIALOG_H

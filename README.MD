@@ -2,10 +2,11 @@
 🚖Analysis and Visualization of Online Ride-Hailing Order Data Project for PPPS
 
 ## Build Requirements
-```
+```shell
     Qt 5.15.2 MinGW 64
 ```
 ## Load Data from .csv Files
+
 Set the path to the direction of the dataset.  
 Click OK and wait.  
 After a while, you will see the loading work done successfully.  
@@ -24,7 +25,15 @@ Fee-Time scatter chat: diplay the distribution of both fee and time.
 ![statistic graph](image/img3.gif)
 
 ## Heat Map
-Display the order in the map to show the distribution of the orders.
+Display the order in the map to show the distribution of the orders.  
+
+heat map v1: scatter all the points to the map (running slow but contains more details).
+
+heat map v2: count the number of points in every pixel of an image and transform it to colored heat map.(running faster than v1 to show the changes over time)
+
 ![heat map](image/img4.gif)
+
+![heat map v2](image/img5.gif)
+
 ## Extern Library Used
 [MapGraphics](https://github.com/raptorswing/MapGraphics) 

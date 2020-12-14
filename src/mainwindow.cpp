@@ -14,6 +14,7 @@ inline int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid) {
     indexX = std::max(0, std::min(indexX, 9));
     indexY = std::max(0, std::min(indexY, 9));
     /*
+    indexX = indexY = 0;
     for (int i = 0; i < 9; i++) {
 
         if (p.x() > (*grid)[i][2]) {
@@ -90,7 +91,7 @@ MainWindow::MainWindow(QWidget *parent)
         Rect[i] = new LineObject(Position(0, 0), Position(0, 0));
         scene->addObject(Rect[i]);
     }
-    scene->addObject(new PointObject(Position(104.065226, 30.65897999999995), 0.000313 * 7, 0.5));
+    scene->addObject(new PointObject(Position(104.065226, 30.65897999999995), 0.000313 * 70, 0.5));
 
     //connect(this, &MainWindow::SetRect, rectTiles.data(), &MyTileSource::SetRect);
     connect(fieldsLngSlider, &RangeSlider::valueChanged, this, &MainWindow::SetFieldsFromHorizontalSliders);

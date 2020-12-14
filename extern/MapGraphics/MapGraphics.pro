@@ -15,6 +15,7 @@ DEFINES += MAPGRAPHICS_LIBRARY
 INCLUDEPATH += .
 
 SOURCES += MapGraphicsScene.cpp \
+    ImageObject.cpp \
     MapGraphicsObject.cpp \
     MapGraphicsView.cpp \
     PointObject.cpp \
@@ -39,6 +40,7 @@ SOURCES += MapGraphicsScene.cpp \
     tileSources/mytilesource.cpp
 
 HEADERS += MapGraphicsScene.h\
+    ImageObject.h \
         MapGraphics_global.h \
     MapGraphicsObject.h \
     MapGraphicsView.h \

@@ -9,6 +9,7 @@
 #include "MapGraphicsView.h"
 #include "mainwindow.h"
 #include "DataEntry.h"
+#include "ImageObject.h"
 
 
 namespace Ui {
@@ -44,22 +45,42 @@ private:
     int gridLowerY = 0;
     int gridUpperY = 9;
     int timeStep;
+    // heat map v1
     LineObject* Rect[4];
     MapGraphicsView * view;
     MapGraphicsScene * scene;
     QSharedPointer<CompositeTileSource> composite;
-    const qreal pointSize =  0.000313 * 7;
+    const qreal pointSize =  0.000313 * 8;
     const qreal pointOpacity = 0.4;
 
     QVector<QVector<const DataEntry*>>* heatMapData;
     QSlider* heatMapSlider;
 
+    // heat map v2
+    LineObject* RectV2[4];
+    MapGraphicsView * viewV2;
+    MapGraphicsScene * sceneV2;
+    QSharedPointer<CompositeTileSource> compositeV2;
+
+    QVector<QVector<const DataEntry*>>* heatMapDataV2;
+    QSlider* heatMapSliderV2;
+    int timeStepV2;
+    QImage *dataImg, *heatImg;
+    const qreal pointSizeV2 = 8;
+    QRgb colorList[256];
+
 public slots:
     void SetHeatMap(int timeStep);
     void UpdateHeatMap();
+
+    void SetHeatMapV2(int timeStep);
+    void UpdateHeatMapV2();
+
 private slots:
     void on_pushButton_2_clicked();
     void on_pushButton_clicked();
+    void on_heatMapV2ButtonRight_clicked();
+    void on_heatMapV2ButtonLeft_clicked();
 };
 
 #endif // VISUALIZATIONDIALOG_H

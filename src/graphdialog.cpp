@@ -63,11 +63,14 @@ GraphDialog::GraphDialog(QWidget* qparent, MainWindow *parent) :
     connect(ui->comboBox_3, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &GraphDialog::SetScatterChart);
     ui->comboBox_3->setCurrentIndex(ChartTimeStep::thirtyMinutes);
     connect(ui->scatterSlider, &QSlider::sliderReleased, this, &GraphDialog::UpdateScatterChart);
+    connect(ui->scatterSlider, &QSlider::valueChanged, this, &GraphDialog::UpdateScatterChartTimeLabel);
 }
 
 GraphDialog::~GraphDialog()
 {
     delete ui;
+    scatterData->clear();
+    delete scatterData;
 }
 
 void GraphDialog::SetOrderChart(int timeStepIndex)
@@ -339,4 +342,32 @@ void GraphDialog::UpdateScatterChart() {
     series->attachAxis(axisX);
     series->attachAxis(axisY);
 
+}
+
+void GraphDialog::UpdateScatterChartTimeLabel(int t)
+{
+    QDateTime currentTime = FromInttoDateTime(startTime + timeStep * t);
+    ui->timeLabel->setText(currentTime.toString());
+}
+
+void GraphDialog::on_FeeTimeButtonRight_clicked()
+{
+    int step = ui->scatterSlider->value();
+    if (step == (endTime - startTime) / timeStep) {
+        return;
+    }
+    ui->scatterSlider->setValue(step + 1);
+    UpdateScatterChart();
+}
+
+
+
+void GraphDialog::on_FeeTimeButtonLeft_clicked()
+{
+    int step = ui->scatterSlider->value();
+    if (step == 0) {
+        return;
+    }
+    ui->scatterSlider->setValue(step - 1);
+    UpdateScatterChart();
 }
