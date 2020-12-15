@@ -15,6 +15,8 @@
 #include "CircleObject.h"
 #include "PointObject.h"
 #include "visualizationdialog.h"
+#include "predictiondialog.h"
+#include "networkmanager.h"
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -66,8 +68,8 @@ private:
 public:
     QVector<DataEntry>* dataFrame = nullptr;
     QVector<QVector<qreal>>* grid = nullptr;
-
     QVector<QVector<QVector<const DataEntry*>>>* dataInGrid;
+    NetworkManager* manager;
 
     RangeSlider* timeSpanSlider;
     RangeSlider* fieldsLngSlider;
@@ -100,6 +102,8 @@ private slots:
     void on_graphButton_clicked();
 
     void on_visualButton_clicked();
+
+    void on_predictButton_clicked();
 
 signals:
     void UpdateMap();

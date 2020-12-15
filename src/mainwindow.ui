@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1146</width>
-    <height>1115</height>
+    <width>1235</width>
+    <height>1261</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -296,7 +296,7 @@
           <item row="1" column="1">
            <widget class="QLabel" name="graphLabel">
             <property name="text">
-             <string>TextLabel</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Information from the data like the requests number over time, &lt;/p&gt;&lt;p&gt;ratio of entering/leaving/inside orders, fee-time scatter chart.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -310,7 +310,7 @@
           <item row="3" column="1">
            <widget class="QLabel" name="visualLabel">
             <property name="text">
-             <string>TextLabel</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualize the requests over time in map &lt;/p&gt;&lt;p&gt;with two kinds of implementation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -324,7 +324,7 @@
           <item row="5" column="1">
            <widget class="QLabel" name="predictLabel">
             <property name="text">
-             <string>TextLabel</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;predict the time from start point and end point given, &lt;/p&gt;&lt;p&gt;use both statistical method and machine learning.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -394,7 +394,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1146</width>
+     <width>1235</width>
      <height>40</height>
     </rect>
    </property>

@@ -60,8 +60,11 @@ void PointObject::paint(QPainter *painter,
     //qDebug() << topLeft.x() << ' ' << topLeft.y();
     QGradient g;
     g = QRadialGradient(QPointF(0, 0), _size / lonPerMeter, QPointF(0, 0));
-    g.setColorAt(0, QColor(0, 0, 255, 100));
-    g.setColorAt(1, QColor(0, 0, 255, 0));
+    g.setColorAt(0, _brushColor);
+    QColor tmp = _brushColor;
+    tmp.setAlpha(0);
+
+    g.setColorAt(1, tmp);
     painter->setRenderHint(QPainter::Antialiasing, true);
     QPen pen = painter->pen();
     pen.setWidthF(10.0);

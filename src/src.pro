@@ -18,6 +18,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     # mytilesource.cpp \
+    networkmanager.cpp \
+    predictiondialog.cpp \
     rangeslider.cpp \
     visualizationdialog.cpp
 
@@ -28,6 +30,8 @@ HEADERS += \
     graphdialog.h \
     mainwindow.h \
     # mytilesource.h \
+    networkmanager.h \
+    predictiondialog.h \
     rangeslider.h \
     visualizationdialog.h
 
@@ -35,6 +39,7 @@ FORMS += \
     filedialog.ui \
     graphdialog.ui \
     mainwindow.ui \
+    predictiondialog.ui \
     rangeslider.ui \
     visualizationdialog.ui
 

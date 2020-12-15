@@ -121,6 +121,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->predictButton->setEnabled(false);
     //connect(ui->graphButton, &QPushButton::clicked, this, &MainWindow::on_graphButton_clicked);
     //connect(ui->visualButton, &QPushButton::clicked, this, &MainWindow::on_visualButton_clicked);
+
+    // network
+    manager = new NetworkManager(this);
 }
 MainWindow::~MainWindow()
 {
@@ -302,4 +305,10 @@ void MainWindow::on_visualButton_clicked()
 {
     VisualizationDialog* visualizationDialog = new VisualizationDialog(this, this);
     visualizationDialog->show();
+}
+
+void MainWindow::on_predictButton_clicked()
+{
+    PredictionDialog* predictWindow = new PredictionDialog(this, this);
+    predictWindow->show();
 }
