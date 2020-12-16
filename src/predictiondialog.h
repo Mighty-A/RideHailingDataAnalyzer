@@ -10,6 +10,7 @@
 #include "DataEntry.h"
 #include "ImageObject.h"
 #include "networkmanager.h"
+#include "predictmodel.h"
 
 #include <QDialog>
 
@@ -57,6 +58,8 @@ private:
     const qreal latlonOffset = 0.03;  // about 100 meters
     const int timeOffset = 30;
     const qreal icon_size = 0.009;
+    PredictModel *model;
+
 
     qreal dist(const QPointF& a, const QPointF& b);
 private slots:

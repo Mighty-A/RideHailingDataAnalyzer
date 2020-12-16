@@ -47,10 +47,13 @@ Two methods are used to predict the travel time:
    1. Input:[departure_time,  weekday, orig_lon, orig_lat, orig_group, dest_lon, dest_lat, dest_group]
    2. Network: Eight Linear Layer with ReLU Layer in them.
    3. Output: [time]   
+   4. Accuracy: 0.72 The probability that the error is within five minutes is 0.72   
 
 ![Prediction](image/img6.gif)
 
+if the dataset don't have the similar orders, the Deep Neural Network will try to predict the travel time like the example below.
 
+![predict with no similar order](image/img7.png)
 
 ## Extern Library Used
 

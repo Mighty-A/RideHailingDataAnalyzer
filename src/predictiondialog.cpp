@@ -64,11 +64,16 @@ PredictionDialog::PredictionDialog(QWidget *qparent, MainWindow* parent)
     l->addWidget(viewDebug);
     debugWindow->show();
    */
+
+    // NN
+    model = new PredictModel(":/model/model.json");
+
 }
 
 PredictionDialog::~PredictionDialog()
 {
     delete ui;
+    delete model;
 }
 
 void PredictionDialog::SetWeekday(int w)
@@ -94,8 +99,8 @@ void PredictionDialog::ReceiveTips(QStringList tip, QVector<QPointF> location)
     tips = tip;
     stringListModelForCompleter->setStringList(tips);
     locations = location;
-    ui->origEdit->setText(ui->origEdit->text());
-    ui->destEdit->setText(ui->destEdit->text());
+    //ui->origEdit->setText(ui->origEdit->text());
+    //ui->destEdit->setText(ui->destEdit->text());
 }
 
 
@@ -179,8 +184,13 @@ void PredictionDialog::on_predictButton_clicked()
 
 
 
+    int prediction = model->Predict(orig, dest, currentTime, currentWeekday);
     // machinelearning
-    ui->PredictLabel->setText("DNN predict: " + QString::number(20) + "minutes");
+    if (prediction > 0) {
+        ui->PredictLabel->setText("DNN predict: " + QString::number(prediction) + "minutes");
+    } else {
+        ui->PredictLabel->setText("DNN failed to predict");
+    }
 }
 
 

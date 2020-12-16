@@ -119,9 +119,9 @@ VisualizationDialog::VisualizationDialog(QWidget *qparent, MainWindow *parent) :
     }
 
     connect(ui->comboBox_2, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &VisualizationDialog::SetHeatMapV2);
-    ui->comboBox_2->setCurrentIndex(ChartTimeStep::tenMinutes);
+    ui->comboBox_2->setCurrentIndex(ChartTimeStep::oneHour);
     SetHeatMapV2(0);
-    connect(heatMapSliderV2, &QSlider::sliderReleased, this, &VisualizationDialog::UpdateHeatMapV2);
+    connect(heatMapSliderV2, &QSlider::valueChanged, this, &VisualizationDialog::UpdateHeatMapV2);
 }
 
 VisualizationDialog::~VisualizationDialog()

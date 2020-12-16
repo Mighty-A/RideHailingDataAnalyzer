@@ -3,4 +3,7 @@
         <file>icon1.png</file>
         <file>icon2.png</file>
     </qresource>
+    <qresource prefix="/model">
+        <file>model.json</file>
+    </qresource>
 </RCC>
