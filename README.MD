@@ -25,6 +25,7 @@ Fee-Time scatter chat: diplay the distribution of both fee and time.
 ![statistic graph](image/img3.gif)
 
 ## Heat Map
+
 Display the order in the map to show the distribution of the orders.  
 
 heat map v1: scatter all the points to the map (running slow but contains more details).
@@ -35,5 +36,22 @@ heat map v2: count the number of points in every pixel of an image and transform
 
 ![heat map v2](image/img5.gif)
 
+##  Travel Time Prediction
+
+Predict the travel time from the given start point to the given end point.
+
+Two methods are used to predict the travel time:
+
+1. Find all the spatially and temporally related orders in the dataset, and get the average time of them as prediction.
+2. Train deep neural network on the dataset and use the network to predict. Information about the network:
+   1. Input:[departure_time,  weekday, orig_lon, orig_lat, orig_group, dest_lon, dest_lat, dest_group]
+   2. Network: Eight Linear Layer with ReLU Layer in them.
+   3. Output: [time]   
+
+![Prediction](image/img6.gif)
+
+
+
 ## Extern Library Used
+
 [MapGraphics](https://github.com/raptorswing/MapGraphics) 
