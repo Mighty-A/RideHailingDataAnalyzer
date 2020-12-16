@@ -288,6 +288,11 @@
           </property>
           <item row="1" column="0">
            <widget class="QPushButton" name="graphButton">
+            <property name="font">
+             <font>
+              <family>Calibri</family>
+             </font>
+            </property>
             <property name="text">
              <string>Statistical Graph</string>
             </property>
@@ -295,6 +300,12 @@
           </item>
           <item row="1" column="1">
            <widget class="QLabel" name="graphLabel">
+            <property name="font">
+             <font>
+              <family>Cascadia Code Light</family>
+              <pointsize>8</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Information from the data like the requests number over time, &lt;/p&gt;&lt;p&gt;ratio of entering/leaving/inside orders, fee-time scatter chart.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
@@ -302,6 +313,11 @@
           </item>
           <item row="3" column="0">
            <widget class="QPushButton" name="visualButton">
+            <property name="font">
+             <font>
+              <family>Calibri</family>
+             </font>
+            </property>
             <property name="text">
              <string>Visualization</string>
             </property>
@@ -309,6 +325,12 @@
           </item>
           <item row="3" column="1">
            <widget class="QLabel" name="visualLabel">
+            <property name="font">
+             <font>
+              <family>Cascadia Code PL Light</family>
+              <pointsize>8</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualize the requests over time in map &lt;/p&gt;&lt;p&gt;with two kinds of implementation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
@@ -316,6 +338,11 @@
           </item>
           <item row="5" column="0">
            <widget class="QPushButton" name="predictButton">
+            <property name="font">
+             <font>
+              <family>Calibri</family>
+             </font>
+            </property>
             <property name="text">
              <string>Prediction</string>
             </property>
@@ -323,6 +350,12 @@
           </item>
           <item row="5" column="1">
            <widget class="QLabel" name="predictLabel">
+            <property name="font">
+             <font>
+              <family>Cascadia Code PL Light</family>
+              <pointsize>8</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;predict the time from start point and end point given, &lt;/p&gt;&lt;p&gt;use both statistical method and machine learning.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>

@@ -5,6 +5,10 @@ NetworkManager::NetworkManager(QObject* parent):
 {
     reply =  nullptr;
     qRegisterMetaType<QVector<QPair<double,double>>>("QVector<QPointF>");
+    QNetworkRequest request;
+    request.setUrl(QUrl("http://restapi.amap.com/v3/assistant/inputtips?output=json&location=104.0652,30.6590&city=028"
+                        "&keywords=成都&key=244a48ad9141aa8b29a7860bdbdc65c9"));
+    reply = manager.get(request);
 }
 
 NetworkManager::~NetworkManager()

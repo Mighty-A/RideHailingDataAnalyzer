@@ -41,6 +41,7 @@
        </property>
        <property name="font">
         <font>
+         <family>Calibri</family>
          <pointsize>10</pointsize>
         </font>
        </property>
@@ -414,6 +415,12 @@ Time:</string>
                   </item>
                   <item row="4" column="1">
                    <widget class="QLabel" name="timeLabel">
+                    <property name="font">
+                     <font>
+                      <family>Cascadia Code Light</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
                     <property name="text">
                      <string>TextLabel</string>
                     </property>

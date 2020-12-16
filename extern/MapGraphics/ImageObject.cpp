@@ -67,3 +67,9 @@ void ImageObject::updatePositionFromEndPoints()
     this->setPos(QPointF(avgLon, avgLat));
 }
 
+void ImageObject::SetRect(const Position &topLeft, const Position &bottomRight)
+{
+    this->topLeft = topLeft;
+    this->bottomRight = bottomRight;
+    updatePositionFromEndPoints();
+}

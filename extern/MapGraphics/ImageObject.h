@@ -15,6 +15,8 @@ public:
     QRectF boundingRect() const;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem* option, QWidget *w);
+
+    void SetRect(const Position& topLeft, const Position& bottomRight);
 signals:
 
 public slots:

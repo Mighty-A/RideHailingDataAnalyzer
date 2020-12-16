@@ -45,15 +45,18 @@ private:
     QStringList tips;
     QStringListModel* stringListModelForCompleter;
     QVector<QPointF> locations;
-    QPointF orig;
-    QPointF dest;
+    QPointF orig = QPointF(0, 0);
+    QPointF dest = QPointF(0, 0);
     PointObject* origPoint;
     PointObject* destPoint;
+    ImageObject* origIcon;
+    ImageObject* destIcon;
     QString origText;
     QString destText;
 
     const qreal latlonOffset = 0.03;  // about 100 meters
     const int timeOffset = 30;
+    const qreal icon_size = 0.009;
 
     qreal dist(const QPointF& a, const QPointF& b);
 private slots:

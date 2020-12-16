@@ -16,6 +16,11 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="predictionBox">
+     <property name="font">
+      <font>
+       <family>Calibri</family>
+      </font>
+     </property>
      <property name="title">
       <string>Estimate Fee and Time</string>
      </property>
@@ -25,8 +30,13 @@
      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,8">
       <item>
        <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <family>Calibri</family>
+         </font>
+        </property>
         <property name="text">
-         <string>TextLabel</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input two address and predict the travel time.&lt;/p&gt;&lt;p&gt;1. Query from the dataset to get average of time(maybe none).&lt;/p&gt;&lt;p&gt;2. Predict the travel time with deep neural network&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -157,7 +167,11 @@
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QTimeEdit" name="timeEdit"/>
+             <widget class="QTimeEdit" name="timeEdit">
+              <property name="currentSection">
+               <enum>QDateTimeEdit::HourSection</enum>
+              </property>
+             </widget>
             </item>
             <item row="3" column="0">
              <widget class="QLabel" name="label_4">

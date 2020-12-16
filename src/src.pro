@@ -2,7 +2,7 @@ QT       += core gui network sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets charts
 
-CONFIG += c++11
+CONFIG += c++14
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -20,6 +20,7 @@ SOURCES += \
     # mytilesource.cpp \
     networkmanager.cpp \
     predictiondialog.cpp \
+    predictmodel.cpp \
     rangeslider.cpp \
     visualizationdialog.cpp
 
@@ -32,6 +33,7 @@ HEADERS += \
     # mytilesource.h \
     networkmanager.h \
     predictiondialog.h \
+    predictmodel.h \
     rangeslider.h \
     visualizationdialog.h
 
@@ -40,7 +42,6 @@ FORMS += \
     graphdialog.ui \
     mainwindow.ui \
     predictiondialog.ui \
-    rangeslider.ui \
     visualizationdialog.ui
 
 # Default rules for deployment.
@@ -59,3 +60,7 @@ DISTFILES += \
 
 INCLUDEPATH += $$PWD/../extern/MapGraphics
 DEPENDPATH += $$PWD/../extern/MapGraphics
+
+RESOURCES += \
+    resource.qrc
+

@@ -44,8 +44,26 @@ PredictionDialog::PredictionDialog(QWidget *qparent, MainWindow* parent)
 
     origPoint = new PointObject(orig, 0.00313, 1.0, QColor(255, 0, 0, 100));
     destPoint = new PointObject(dest, 0.00313, 1.0, QColor(0, 255, 0, 100));
-    scene->addObject(origPoint);
-    scene->addObject(destPoint);
+    //scene->addObject(origPoint);
+    //scene->addObject(destPoint);
+    QImage icon1 = QPixmap(":/icon/icon1.png").toImage().mirrored(false, true);
+    QImage icon2 = QPixmap(":/icon/icon2.png").toImage().mirrored(false, true);
+
+    origIcon = new ImageObject(Position(orig.x() - icon_size / 2, orig.y()), Position(orig.x() + icon_size / 2, orig.y() + icon_size), icon1);
+    destIcon = new ImageObject(Position(dest.x() - icon_size / 2, dest.y()), Position(dest.x() + icon_size / 2, dest.y() + icon_size), icon2);
+    scene->addObject(origIcon);
+    scene->addObject(destIcon);
+    /*
+    QDialog* debugWindow = new QDialog(this);
+    QVBoxLayout* l = new QVBoxLayout(debugWindow);
+    debugWindow->setLayout(l);
+    QGraphicsScene* sceneDebug = new QGraphicsScene(debugWindow);
+    QGraphicsView * viewDebug = new QGraphicsView(sceneDebug);
+    sceneDebug->addItem(new QGraphicsPixmapItem(QPixmap::fromImage(icon1)));
+
+    l->addWidget(viewDebug);
+    debugWindow->show();
+   */
 }
 
 PredictionDialog::~PredictionDialog()
@@ -112,6 +130,8 @@ void PredictionDialog::on_DestButton_clicked()
 void PredictionDialog::UpdateMap() {
     origPoint->setPoint(orig);
     destPoint->setPoint(dest);
+    origIcon->SetRect(Position(orig.x() - icon_size / 2, orig.y()), Position(orig.x() + icon_size / 2, orig.y() + icon_size));
+    destIcon->SetRect(Position(dest.x() - icon_size / 2, dest.y()), Position(dest.x() + icon_size / 2, dest.y() + icon_size));
 }
 
 void PredictionDialog::SetTime(QTime time)
@@ -158,8 +178,9 @@ void PredictionDialog::on_predictButton_clicked()
     }
 
 
-    // machinelearning
 
+    // machinelearning
+    ui->PredictLabel->setText("DNN predict: " + QString::number(20) + "minutes");
 }
 
 
