@@ -115,10 +115,8 @@ VisualizationDialog::VisualizationDialog(QWidget *qparent, MainWindow *parent) :
         alpha=200/255.0*i;
         colorList[i]=img.pixel(i,0)&0x00FFFFFF|(alpha<<24);
     }
-
     connect(ui->comboBox_2, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &VisualizationDialog::SetHeatMapV2);
     ui->comboBox_2->setCurrentIndex(ChartTimeStep::oneHour);
-    SetHeatMapV2(0);
     connect(heatMapSliderV2, &QSlider::valueChanged, this, &VisualizationDialog::UpdateHeatMapV2);
 }
 

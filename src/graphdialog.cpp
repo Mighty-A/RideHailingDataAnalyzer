@@ -129,7 +129,7 @@ void GraphDialog::SetOrderChart(int timeStepIndex)
     // axisX
     QDateTimeAxis* axisX = new QDateTimeAxis;
     axisX->setTickCount(5);
-    axisX->setFormat("h:00 dd");
+    axisX->setFormat("dd h:00");
     axisX->setTitleText("time");
     axisX->setGridLineVisible(true);
     axisX->setLabelsAngle(-45);
@@ -239,7 +239,7 @@ void GraphDialog::SetBarChart(int timeStepIndex)
     QStringList categories;
     QBarCategoryAxis* axisX = new QBarCategoryAxis();
     for (int i = 0; i < (endTime - startTime) / timeStep; i++) {
-        categories.append(FromInttoDateTime((timeStep * i + startTime)).toString("h:00 dd"));
+        categories.append(FromInttoDateTime((timeStep * i + startTime)).toString("dd h:00"));
     }
     axisX->append(categories);
     barChart->addAxis(axisX, Qt::AlignBottom);
