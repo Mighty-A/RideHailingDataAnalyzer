@@ -5,12 +5,14 @@ FileLoadThread::FileLoadThread()
 
 }
 
-void FileLoadThread::LoadFile(QString path, QVector<DataEntry> *dataFrame, QVector<QVector<qreal> > *grid)
+void FileLoadThread::LoadFile(QString path, QVector<DataEntry> *dataFrame, QVector<QVector<qreal> > *grid, int startTime, int endTime)
 {
     mutex.lock();
     this->path = path;
     this->dataFrame = dataFrame;
     this->grid = grid;
+    this->startTime = startTime;
+    this->endTime = endTime;
     _CAN_RUN = true;
     _SUCCESS = false;
     mutex.unlock();
@@ -20,7 +22,7 @@ void FileLoadThread::LoadFile(QString path, QVector<DataEntry> *dataFrame, QVect
 
 void FileLoadThread::run()
 {
-    const int NUMBER_OF_FILES = 75;
+    int NUMBER_OF_FILES = 5 * (endTime - startTime + 1);
     mutex.lock();
     QString path = this->path;
     QVector<DataEntry>* dataFrame = this->dataFrame;
@@ -55,7 +57,7 @@ void FileLoadThread::run()
     const QStringList Day = {"01", "02", "03", "04", "05", "06", "07", "08",
                              "09", "10", "11", "12", "13", "14", "15"};
     int count = 0;
-    for (int i = 0; i < Day.length(); i++) {
+    for (int i = startTime - 1; i < endTime; i++) {
         for (int j = 0; j < 5; j ++) {
             QString debug = path + "/order_201611" + Day[i] + "_part" + QString(j + '0') + ".csv";
             QFile dataFile(path + "/order_201611" + Day[i] + "_part" + QString(j + '0') + ".csv");

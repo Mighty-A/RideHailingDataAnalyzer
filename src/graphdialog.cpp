@@ -1,14 +1,23 @@
 ﻿#include "graphdialog.h"
 #include "ui_graphdialog.h"
 
+inline int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid) {
+    const static qreal bottom = 30.524081949676;
+    const static qreal top = 30.7938780503239;
+    const static qreal left = 103.908407474531;
+    const static qreal right = 104.222044525468;
+    int indexX = floor((p.x() - left) / ((right - left) / 10));
+    int indexY = floor((p.y() - bottom) / ((top - bottom) / 10));
+    indexX = std::max(0, std::min(indexX, 9));
+    indexY = std::max(0, std::min(indexY, 9));
+    return indexX + 10 * indexY;
+}
 
 long long FromDateTimetoInt(QDateTime t) {
-    //const long long OFFSET = - 8 * 3600;
     return t.toMSecsSinceEpoch() / 1000;
 }
 
 QDateTime FromInttoDateTime(long long time) {
-    //const long long OFFSET = 8 * 3600;
     QDateTime tmp;
     tmp.setMSecsSinceEpoch((time) * 1000);
     return tmp;
@@ -16,8 +25,8 @@ QDateTime FromInttoDateTime(long long time) {
 
 GraphDialog::GraphDialog(QWidget* qparent, MainWindow *parent) :
     QDialog(qparent),
-    mainwindow(parent),
-    ui(new Ui::GraphDialog)
+    ui(new Ui::GraphDialog),
+    mainwindow(parent)
 {
     ui->setupUi(this);
 
@@ -81,7 +90,6 @@ void GraphDialog::SetOrderChart(int timeStepIndex)
         lineChart->removeAxis(lineChart->axisX());
     if (lineChart->axisY())
         lineChart->removeAxis(lineChart->axisY());
-    //qDebug() << startTime << ' ' << endTime;
     timeStep = timeStepValue[timeStepIndex];
     int* count = new int[(endTime - startTime) / timeStep + 10]{0};
     for (int ii = gridLowerX; ii <= gridUpperX; ii++) {
@@ -151,13 +159,11 @@ void GraphDialog::SetOrderChart(int timeStepIndex)
 
 void GraphDialog::SetBarChart(int timeStepIndex)
 {
-    //graphData.clear();
     barChart->removeAllSeries();
     if (barChart->axisX())
         barChart->removeAxis(barChart->axisX());
     if (barChart->axisY())
         barChart->removeAxis(barChart->axisY());
-    //qDebug() << startTime << ' ' << endTime;
     timeStep = timeStepValue[timeStepIndex];
     int* countOutFlow = new int[(endTime - startTime) / timeStep + 10]{0};
     int* countInFlow = new int[(endTime - startTime) / timeStep + 10]{0};
@@ -201,15 +207,12 @@ void GraphDialog::SetBarChart(int timeStepIndex)
             for (int t = 0; t < (*dataInGrid)[gridIndex][2].size(); t++) {
                 const DataEntry* tmp = (*dataInGrid)[gridIndex][2][t];
                 if (startTime <= tmp->departureTime && tmp->departureTime <= endTime) {
-                    //graphData.push_back(tmp);
                     int timeIndex = (tmp->departureTime - startTime) / timeStep;
                     countInternal[timeIndex]++;
                 }
             }
         }
     }
-    //bool compareByDepartureTime(const DataEntry* a, const DataEntry* b);
-    //std::sort(graphData.begin(), graphData.end(), compareByDepartureTime);
     QBarSet* inFlow, *outFlow, *internal;
     inFlow = new QBarSet("orders entering this area");
     outFlow = new QBarSet("orders leaving this area");
@@ -258,7 +261,6 @@ void GraphDialog::SetBarChart(int timeStepIndex)
     barChart->legend()->setAlignment(Qt::AlignBottom);
     barChart->legend()->setFont(axisFont);
 
-    //series->attachAxis(axisX);
 
 
 
@@ -278,7 +280,6 @@ void GraphDialog::SetScatterChart(int timeStepIndex)
 
     for (int ii = gridLowerX; ii <= gridUpperX; ii++) {
         for (int jj = gridLowerY; jj <= gridUpperY; jj++) {
-                //qDebug() << startTime << ' ' << endTime;
             int gridIndex = ii + jj * 10;
             for (int t = 0; t < (*dataInGrid)[gridIndex][0].size(); t++) {
                 const DataEntry* tmp = (*dataInGrid)[gridIndex][0][t];

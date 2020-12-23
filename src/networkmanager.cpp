@@ -45,10 +45,8 @@ void NetworkManager::AddressTipsReceived()
         if (tmp.value("location").toString().isEmpty())
             continue;
         QStringList tmpstr = tmp.value("location").toString().split(",");
-        //qDebug() << tmpstr[0];
         tips.push_back(tmp.value("name").toString());
         locations.append(QPointF(tmpstr[0].toDouble(), tmpstr[1].toDouble()));
     }
-    //qDebug() << "emit";
     emit AddressTipFinished(tips, locations);
 }

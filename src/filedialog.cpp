@@ -17,6 +17,12 @@ FileDialog::FileDialog(QWidget *parent) :
     grid = new QVector<QVector<qreal>>;
     ui->CancelButton->setEnabled(false);
 
+    // slider
+    timeSlider = new RangeSlider(Qt::Orientation::Horizontal);
+    timeSlider->SetRange(1, 15);
+    ui->groupBox->layout()->addWidget(timeSlider);
+    connect(timeSlider, &RangeSlider::valueChanged, this, &FileDialog::UpdateTime);
+
     connect(ui->openDirButton, &QPushButton::released, this, &FileDialog::SetFolderPath);
 
     // read
@@ -43,7 +49,7 @@ void FileDialog::ReadFileList()
 {
     ui->OKButton->setEnabled(false);
     ui->CancelButton->setEnabled(true);
-    thread.LoadFile(path, dataFrame, grid);
+    thread.LoadFile(path, dataFrame, grid, startTime, endTime);
 }
 
 void FileDialog::WrongInput()
@@ -79,4 +85,11 @@ void FileDialog::Reset()
     dataFrame->clear();
     ui->OKButton->setEnabled(true);
     ui->CancelButton->setEnabled(false);
+}
+
+void FileDialog::UpdateTime(int startTime, int endTime)
+{
+    this->startTime = startTime;
+    this->endTime = endTime;
+    ui->timeLabel->setText("Time: 2016.11." + QString::number(startTime) + " - 2016.11." + QString::number(endTime));
 }

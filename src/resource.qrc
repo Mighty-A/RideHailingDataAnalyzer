@@ -2,6 +2,7 @@
     <qresource prefix="/icon">
         <file>icon1.png</file>
         <file>icon2.png</file>
+        <file>icon/taxi.svg</file>
     </qresource>
     <qresource prefix="/model">
         <file>model.json</file>

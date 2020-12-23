@@ -1,6 +1,18 @@
 #include "predictiondialog.h"
 #include "ui_predictiondialog.h"
 
+inline int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid) {
+    const static qreal bottom = 30.524081949676;
+    const static qreal top = 30.7938780503239;
+    const static qreal left = 103.908407474531;
+    const static qreal right = 104.222044525468;
+    int indexX = floor((p.x() - left) / ((right - left) / 10));
+    int indexY = floor((p.y() - bottom) / ((top - bottom) / 10));
+    indexX = std::max(0, std::min(indexX, 9));
+    indexY = std::max(0, std::min(indexY, 9));
+    return indexX + 10 * indexY;
+}
+
 PredictionDialog::PredictionDialog(QWidget *qparent, MainWindow* parent)
  :
     mainwindow(parent),

@@ -58,8 +58,6 @@ VisualizationDialog::VisualizationDialog(QWidget *qparent, MainWindow *parent) :
     connect(ui->comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &VisualizationDialog::SetHeatMap);
     ui->comboBox->setCurrentIndex(ChartTimeStep::thirtyMinutes);
     connect(heatMapSlider, &QSlider::sliderReleased, this, &VisualizationDialog::UpdateHeatMap);
-    //qDebug() << '1';
-    // Heat Map V2
 
     sceneV2 = new MapGraphicsScene(this);
     viewV2 = new MapGraphicsView(sceneV2, this);

@@ -13,23 +13,6 @@ inline int LocatePointInGrid(QPointF p, QVector<QVector<qreal>>* grid) {
     int indexY = floor((p.y() - bottom) / ((top - bottom) / 10));
     indexX = std::max(0, std::min(indexX, 9));
     indexY = std::max(0, std::min(indexY, 9));
-    /*
-    indexX = indexY = 0;
-    for (int i = 0; i < 9; i++) {
-
-        if (p.x() > (*grid)[i][2]) {
-            indexX = i + 1;
-        } else {
-            break;
-        }
-    }
-    for (int i = 0; i < 9; i++) {
-        if (p.y() > (*grid)[i * 10][3]) {
-            indexY = i + 1;
-        } else {
-            break;
-        }
-    }*/
     return indexX + 10 * indexY;
 }
 
@@ -75,31 +58,24 @@ MainWindow::MainWindow(QWidget *parent)
 
     QSharedPointer<OSMTileSource> osmTiles(new OSMTileSource(OSMTileSource::OSMTiles), &QObject::deleteLater);
     QSharedPointer<MyTileSource> rectTiles(new MyTileSource(), &QObject::deleteLater);
-    //QSharedPointer<GridTileSource> gridTiles(new GridTileSource(), &QObject::deleteLater);
     QSharedPointer<CompositeTileSource> composite(new CompositeTileSource(), &QObject::deleteLater);
     composite->addSourceBottom(osmTiles);
     composite->addSourceTop(rectTiles);
     view->setTileSource(composite);
 
-    //view->setDragMode(MapGraphicsView::DragMode::NoDrag);
-
-
-    // map init
+    // map parameters
     view->setZoomLevel(11);
     view->centerOn(104.0652259999995, 30.65897999999995);
     for (int i = 0; i < 4; i++) {
         Rect[i] = new LineObject(Position(0, 0), Position(0, 0));
         scene->addObject(Rect[i]);
     }
-    scene->addObject(new PointObject(Position(104.065226, 30.65897999999995), 0.000313 * 70, 0.5));
 
-    //connect(this, &MainWindow::SetRect, rectTiles.data(), &MyTileSource::SetRect);
     connect(fieldsLngSlider, &RangeSlider::valueChanged, this, &MainWindow::SetFieldsFromHorizontalSliders);
     connect(fieldsLatSlider, &RangeSlider::valueChanged, this, &MainWindow::SetFieldsFromVerticalSliders);
-    // refresh
     connect(rectTiles.data(), &MyTileSource::rectChanged, view, &MapGraphicsView::Update);
 
-    // data init
+    // data holder init
     dataInGrid = new QVector<QVector<QVector<const DataEntry*>>>;
     for (int i = 0; i < 100; i++) {
         QVector<QVector<const DataEntry*>> tmp;
@@ -119,8 +95,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphButton->setEnabled(false);
     ui->visualButton->setEnabled(false);
     ui->predictButton->setEnabled(false);
-    //connect(ui->graphButton, &QPushButton::clicked, this, &MainWindow::on_graphButton_clicked);
-    //connect(ui->visualButton, &QPushButton::clicked, this, &MainWindow::on_visualButton_clicked);
+    setWindowIcon(QIcon(":/icon/icon/taxi.svg"));
 
     // network
     manager = new NetworkManager(this);
@@ -143,32 +118,9 @@ void MainWindow::ReceiveShow(QVector<DataEntry>* dataFrame, QVector<QVector<qrea
     this->dataFrame = dataFrame;
     ui->statusbar->showMessage(tr("Preprocessing..."));
     emit Preprocess(dataFrame, grid, dataInGrid);
-    //qDebug() << dataFrame << dataFrame->size();
-    //qDebug() << grid << grid->size() << ' ' << grid[0].size();
-
-    // preprocess
-/*
-    for (int i = 0; i < dataFrame->size(); i++) {
-        //qDebug() << i;
-        int indexOrig = LocatePointInGrid((*dataFrame)[i].orig);
-        int indexDest = LocatePointInGrid((*dataFrame)[i].dest);
-        //qDebug() << indexDest << ' ' << indexOrig;
-        const DataEntry* tmp = &(this->dataFrame->at(i));
-        if (indexDest == indexOrig) {
-            dataInGrid[indexOrig][dataInGridType::INFLOW]->push_back(tmp);
-        } else {
-
-            dataInGrid[indexOrig][dataInGridType::OUTFLOW]->push_back(tmp);
-            dataInGrid[indexDest][dataInGridType::INFLOW]->push_back(tmp);
-        }
-    }*/
 
     mutex.unlock();
     SetRect(QPointF((*grid)[0][6], (*grid)[0][7]), QPointF((*grid)[99][2], (*grid)[99][3]));
-    //emit SetRect(QPointF((*grid)[0][6], (*grid)[0][7]), QPointF((*grid)[99][2], (*grid)[99][3]));
-
-
-
 }
 
 void MainWindow::SetStartTimeFromEdit(const QDateTime& tmpDateTime) {
@@ -180,7 +132,6 @@ void MainWindow::SetStartTimeFromEdit(const QDateTime& tmpDateTime) {
         QMessageBox tmpMess;
         tmpMess.setText(tr("Wrong Time Span Input! Please Input a Valid Time Span"));\
         tmpMess.exec();
-        // ui->startDateTimeEdit->setDateTime(FromInttoDateTime(lowerTimeBound)); no reset
         return;
     }
     startTime = tmp;
@@ -195,7 +146,6 @@ void MainWindow::SetEndTimeFromEdit(const QDateTime& tmpDateTime) {
     if (tmp < startTime) {
         QMessageBox tmpMess;
         tmpMess.setText(tr("Wrong Time Span Input! Please Input a Valid Time Span"));
-        //ui->endDateTimeEdit->setDateTime(FromInttoDateTime(upperTimeBound));  no reset
         tmpMess.exec();
         return;
     }
@@ -222,31 +172,18 @@ void MainWindow::SetFieldsFromHorizontalSliders(int lower, int upper) {
     SetRect(
             QPointF((*grid)[gridLowerX + gridLowerY * 10][6], (*grid)[gridLowerX + gridLowerY * 10][7]),
             QPointF((*grid)[gridUpperX + gridUpperY * 10][2], (*grid)[gridUpperX + gridUpperY * 10][3])
-        );/*
-    view->centerOn(
-            ((*grid)[gridLowerX + gridLowerY * 10][6] + (*grid)[gridUpperX + gridUpperY * 10][2]) / 2,
-            ((*grid)[gridLowerX + gridLowerY * 10][7] + (*grid)[gridUpperX + gridUpperY * 10][3]) / 2
-                );*/
+        );
 }
 void MainWindow::SetFieldsFromVerticalSliders(int lower, int upper) {
-    //qDebug() << "Vetical change. from " << gridLowerY << ' ' << gridUpperY << " to " << 9 - upper << ' ' << 9 - lower;
     gridLowerY = 9 - upper;
     gridUpperY = 9 - lower;
     SetRect(
             QPointF((*grid)[gridLowerX + gridLowerY * 10][6], (*grid)[gridLowerX + gridLowerY * 10][7]),
             QPointF((*grid)[gridUpperX + gridUpperY * 10][2], (*grid)[gridUpperX + gridUpperY * 10][3])
-        );/*
-    view->centerOn(
-            ((*grid)[gridLowerX + gridLowerY * 10][6] + (*grid)[gridUpperX + gridUpperY * 10][2]) / 2,
-            ((*grid)[gridLowerX + gridLowerY * 10][7] + (*grid)[gridUpperX + gridUpperY * 10][3]) / 2
-                );*/
+        );
 }
 
 void MainWindow::SetRect(QPointF bottomLeft, QPointF topRight) {
-    /*
-    qDebug() << "new rect: (" << gridLowerX << "," << gridLowerY << ") (" << gridUpperX << "," << gridUpperY << ")";
-    qDebug() << "(" << bottomLeft.x() << "," << bottomLeft.y() << ") (" << topRight.x() << "," << topRight.y() << ")";
-    */
     Rect[0]->setEndPointA(Position(bottomLeft.x(), bottomLeft.y()));
     Rect[0]->setEndPointB(Position(topRight.x(), bottomLeft.y()));
     Rect[1]->setEndPointA(Position(topRight.x(), bottomLeft.y()));
@@ -277,12 +214,11 @@ void Worker::slt_dowork(
         QVector<DataEntry>* dataFrame,
         QVector<QVector<qreal>>* grid,
         QVector<QVector<QVector<const DataEntry*>>>* dataInGrid
-) {
+)
+{
     for (int i = 0; i < dataFrame->size(); i++) {
-        //qDebug() << i;
         int indexOrig = LocatePointInGrid((*dataFrame)[i].orig, grid);
         int indexDest = LocatePointInGrid((*dataFrame)[i].dest, grid);
-        //qDebug() << indexDest << ' ' << indexOrig;
         const DataEntry* tmp = &(dataFrame->at(i));
         if (indexDest == indexOrig) {
             (*dataInGrid)[indexOrig][dataInGridType::INTERNAL].push_back(tmp);

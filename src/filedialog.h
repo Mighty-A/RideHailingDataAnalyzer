@@ -3,6 +3,7 @@
 
 #include "DataEntry.h"
 #include "fileloadthread.h"
+#include "rangeslider.h"
 #include <QDialog>
 #include <vector>
 #include <QDir>
@@ -29,15 +30,24 @@ private:
     QVector<QVector<qreal>>* grid = nullptr;
     FileLoadThread thread;
 
+    int startTime = 1;
+    int endTime = 15;
+    RangeSlider* timeSlider;
 public:
 
 private slots:
+    // set the init folder for user to select the dataset
     void SetFolderPath();
+    // start reading data from csv file in another thread
     void ReadFileList();
+    // deal with wrong file directory
     void WrongInput();
+    // Show the dialog leading to the mainwindow
     void LoadingFinished();
+    // reset progressbar for another try
     void Reset();
-
+    //
+    void UpdateTime(int startTime, int endTime);
 signals:
     void SendData(QVector<DataEntry>* dataFrame, QVector<QVector<qreal>>*);
 };

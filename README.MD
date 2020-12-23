@@ -2,9 +2,15 @@
 🚖Analysis and Visualization of Online Ride-Hailing Order Data Project for PPPS
 
 ## Build Requirements
+
 ```shell
-    Qt 5.15.2 MinGW 64
+    Qt 5.15.2 MinGW 64 Release
+    QtCharts
 ```
+Open the .pro file in Qt and build the project
+
+It may takes some time to load the map data from the OSM or Amap at the first time to run. (Make sure you have access to Internet)
+
 ## Load Data from .csv Files
 
 Set the path to the direction of the dataset.  

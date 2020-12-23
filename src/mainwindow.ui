@@ -41,6 +41,8 @@
          <font>
           <family>Arial</family>
           <pointsize>15</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -49,12 +51,15 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="dataChoosingLayout" stretch="4,0,6">
+       <layout class="QHBoxLayout" name="dataChoosingLayout" stretch="0,0,0,6">
         <property name="leftMargin">
          <number>10</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="timeSettingLayout" stretch="7,1">
+         <layout class="QVBoxLayout" name="startAndEndLayout"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="timeSettingLayout" stretch="0">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout" stretch="0,10,0,1,10,0">
             <item>
@@ -200,9 +205,6 @@
             </item>
            </layout>
           </item>
-          <item>
-           <layout class="QVBoxLayout" name="startAndEndLayout"/>
-          </item>
          </layout>
         </item>
         <item>
@@ -290,7 +292,9 @@
            <widget class="QPushButton" name="graphButton">
             <property name="font">
              <font>
-              <family>Calibri</family>
+              <family>Arial</family>
+              <weight>75</weight>
+              <bold>true</bold>
              </font>
             </property>
             <property name="text">
@@ -302,7 +306,7 @@
            <widget class="QLabel" name="graphLabel">
             <property name="font">
              <font>
-              <family>Cascadia Code Light</family>
+              <family>Cascadia Code PL Light</family>
               <pointsize>8</pointsize>
              </font>
             </property>
@@ -315,7 +319,9 @@
            <widget class="QPushButton" name="visualButton">
             <property name="font">
              <font>
-              <family>Calibri</family>
+              <family>Arial</family>
+              <weight>75</weight>
+              <bold>true</bold>
              </font>
             </property>
             <property name="text">
@@ -340,7 +346,9 @@
            <widget class="QPushButton" name="predictButton">
             <property name="font">
              <font>
-              <family>Calibri</family>
+              <family>Arial</family>
+              <weight>75</weight>
+              <bold>true</bold>
              </font>
             </property>
             <property name="text">
@@ -428,7 +436,7 @@
      <x>0</x>
      <y>0</y>
      <width>1235</width>
-     <height>40</height>
+     <height>29</height>
     </rect>
    </property>
   </widget>

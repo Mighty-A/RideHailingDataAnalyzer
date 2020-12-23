@@ -93,20 +93,21 @@ public:
 
 
 private slots:
+    // set time span
     void SetStartTimeFromEdit(const QDateTime &tmpDateTime);
     void SetEndTimeFromEdit(const QDateTime &tmpDateTime);
     void SetTimeFromSlider(int aLowerTime, int aUpperTime);
+
+    // set fields
     void SetFieldsFromHorizontalSliders(int lower, int upper);
     void SetFieldsFromVerticalSliders(int lower, int upper);
 
+    // sub window buttons
     void on_graphButton_clicked();
-
     void on_visualButton_clicked();
-
     void on_predictButton_clicked();
 
 signals:
-    void UpdateMap();
     void Preprocess(
             QVector<DataEntry>* dataFrame,
             QVector<QVector<qreal>>* grid,
