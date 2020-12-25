@@ -16,9 +16,10 @@ It may takes some time to load the map data from the OSM or Amap at the first ti
 Set the path to the direction of the dataset.  
 Click OK and wait.  
 After a while, you will see the loading work done successfully.  
-![successfully loaded](image/img1.png)
+![successfully loaded](image/img1.gif)
 
 ## Easy to Tune the Parameters
+
 Time Span: support both calendar edit and slider.  
 Fields: support sliders.
 ![setting fields and time span](image/img2.gif)
@@ -60,6 +61,12 @@ Two methods are used to predict the travel time:
 if the dataset don't have the similar orders, the Deep Neural Network will try to predict the travel time like the example below.
 
 ![predict with no similar order](image/img7.png)
+
+## Related Files
+
+[report](https://jbox.sjtu.edu.cn/l/b1kNbM)
+
+[video](https://jbox.sjtu.edu.cn/l/QJGUff )
 
 ## Extern Library Used
 

@@ -245,7 +245,7 @@ void GraphDialog::SetBarChart(int timeStepIndex)
     barChart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
     axisX->setLabelsFont(axisFont);
-    axisX->setLabelsAngle(-45);
+    axisX->setLabelsAngle(-90);
 
 
     // axisY
